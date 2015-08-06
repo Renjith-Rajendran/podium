@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>Podium</title>
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="css/media.css" type="text/css" rel="stylesheet">
+    <link href="css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="css/jquery.mobile-1.4.5.min.css" type="text/css" rel="stylesheet" ></head>
+<body>
+    <!----------------------------------schoolSelectionPage Start----------------------------------------------->
+    <div id="schoolSelectionPage" style="display:none">
+        <header>
+            <div class="container">
+                <h1>Select school to proceed</h1>
+            </div>
+        </header>
+        <div class="section no-pad-bot" id="index-banner">
+            <div class="container">
+                <div class="row center no-margin-bottom">
+                    <p class="header col s12 light">Tap on the school logo to change school</p>
+                    <div id="search" class="col s12 light">
+                        <form action="#">
+                            <input class="search_box" type="search" placeholder="Search by school name" >
+                                <a class="btn-floating btn-small waves-effect search_button"><i class="material-icons">search</i></a>
+                                </form>
+                    </div>
+            </div>
+            <ul id="schoolListGrid" class="list">
+            </ul>
+        </div>
+     </div>
+    </div><!--schoolSelectionPage-->
+    <!----------------------------------schoolSelectionPage End----------------------------------------------->
+    <!-------------------------------------LoginPage Start---------------------------------------------------->
+    <div id="loginPage" style="display:none">
+        <header>
+            <div class="container">
+                <h1>Login</h1>
+            </div>
+        </header>
+         <div class="section no-pad-bot" id="index-banner">
+             <div class="container">
+                 <div id="schoolLogo" class="row center no-margin-bottom"><img id="schoolImage" src="" alt="School Image" class="circle responsive-img circular">
+                     <p class="header col s12 light">Tap on the school logo to change school</p>
+                 </div>
+                 <div class="login_box ">
+                     <form>
+                         <div class="row no-margin-bottom">
+                             <div class="col s12 light">
+                                 <input class="login_form" type="text" placeholder="Username" id="username">
+                             </div>
+                         </div>
+                         <div class="row no-margin-bottom">
+                             <div class="col s12 light">
+                                 <input class="login_form" type="password" placeholder="Password" id="password">
+                             </div>
+                         </div>
+                         <p>
+                             <input type="checkbox" id="test5" />
+                             <label class="remember" for="test5">Remember me</label>
+                         </p>
+                         <a id="loginButton" class="btn-floating btn-large waves-effect waves-light pink lighten-1 login_button"><i class="material-icons">lock</i></a>
+                     </form>
+                 </div>
+             </div>
+     </div>
+    </div> <!--LoginPage-->
+    <!----------------------------------- LoginPage End ------------------------------------------------->
+    <!----------------------------------- StudentDetailsPage Start -------------------------------------->
+    <div id="studentDetailsPage" style="display:none">
+        <header>
+            <div class="container">
+                <h1>Select student to proceed</h1>
+            </div>
+        </header>
+        <div class="section no-pad-bot" id="index-banner">
+            <div class="container">
+                <div id="studentSchoolLogo" class="row center no-margin-bottom"><img src="images/schools_build.jpg" alt="" class="circle responsive-img circular">
+                    <p class="header col s12 light">
+                    Tap on the school logo to change school
+                    </p>
+                    </div>
+                <div class="login_box mb10">
+                    <div class="col s12 m8 offset-m2 l6 offset-l3">
+                        <div class="card-panel proceed_box">
+                            <div class="row valign-wrapper no-margin-bottom">
+                                <div class="col s4">
+                                    <img src="images/student.jpg" alt="" class=" proceed_img"> <!-- notice the "circle" class -->
+                                        </div>
+                                <div class="col s8" id="toDashBoard">
+                                    <p>
+                                    Student Name: Jancy <br/><br/>
+                                    Standard :5 B
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="login_box mb10">
+                    <div class="col s12 m8 offset-m2 l6 offset-l3">
+                        <div class="card-panel proceed_box">
+                            <div class="row valign-wrapper no-margin-bottom">
+                                <div class="col s4">
+                                    <img src="images/student.jpg" alt="" class=" proceed_img"> <!-- notice the "circle" class -->
+                                        </div>
+                                <div class="col s8">
+                                    <p>
+                                    Student Name: Jancy <br/><br/>
+                                    Standard :5 B
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!----------------------------------- StudentDetailsPage End ---------------------------------------->
+    <!---------------------------------------- Dash Board Start ----------------------------------------->
+    <div id="dashBoardPage" style="display:none">
+        <header>
+            <div class="container">
+                <table>
+                    <tbody>
+                        <tr class="white-txt">
+                            <td class="no_padding_td" width="10%">
+                                <a href="#"></a>
+                            </td>
+                            <td class="no_padding_td text-align-center" width="80%"><p><b>Jackson</b></p></td>
+                            <td class="no_padding_td text-align-right" width="10%" >
+                                <a href="#"><i class="material-icons">settings</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </header>
+        <div class="section">
+            <ul id="dashboard">
+                <li class="waves-effect" id="profile">
+                    <a href="#">
+                        <img src="images/iProfile.png">
+                        <p> Profile </p>
+                    </a>
+                </li>
+                <li class="waves-effect" id="attendance">
+                    <a href="#">
+                        <img src="images/iAttendance.png">
+                        <p>Attendance</p>
+                    </a>
+                </li>
+                <li class="waves-effect" id="message">
+                    <a href="#">
+                        <img src="images/message.png">
+                        <p>Message</p>
+                    </a>
+                </li>
+                <li class="waves-effect" id="exam">
+                    <a href="#">
+                        <img src="images/exam.png">
+                        <p>Exam</p>
+                    </a>
+                </li>
+                <li class="waves-effect" id="apply_leave">
+                    <a href="#">
+                        <img src="images/leave.png">
+                        <p>Apply Leave </p>
+                    </a>
+                </li>
+                <li class="waves-effect" id="timline">
+                    <img src="images/timeLine.png">
+                    <a href="#">
+                        <p>Time Line<br/>(school events)</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!---------------------------------------- Dash Board End ------------------------------------------->
+    <!---------------------------------------- ProfilePage Start ----------------------------------------->
+    <div id="profilePage" style="display:none">
+        <header>
+            <div class="container">
+                <table>
+                    <tbody>
+                        <tr class="white-txt">
+                            <td class="no_padding_td" width="10%">
+                                <a href="#" onclick="dashBoardPage()"><i class="material-icons small">home</i></a>
+                            </td>
+                            <td class="no_padding_td text-align-center" width="80%"><p><b>Profile</b></p></td>
+                            <td class="no_padding_td text-align-right" width="10%" >
+                                <a href="#"><i class="material-icons">settings</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </header>
+        <div class="container">
+            <div class="row center no-margin-bottom">
+                <img id="resultProfilePicture" src="images/student.jpg" alt="" class=" responsive-img profile_square">
+                    </div>
+            <div class="section no-pad-bot" id="index-banner">
+                <div class="container">
+                    <div class="row bg_white">
+                        <label>
+                            <div class="col s6">Name</div>
+                            <div class="col s6" id="resultName"></div>
+                        </label>
+                    </div>
+                    <div class="row bg_ash">
+                        <div class="col s6">UserName</div>
+                        <div class="col s6" id="resultUserName"></div>
+                    </div>
+                    <div class="row bg_white">
+                        <div class="col s6">Grade</div>
+                        <div class="col s6" id="resultGrade"></div>
+                    </div>
+                    <div class="row bg_ash">
+                        <div class="col s6">Division</div>
+                        <div class="col s6" id="resultDivision"></div>
+                    </div>
+                    <div class="row bg_white">
+                        <div class="col s6">Admission Date</div>
+                        <div class="col s6" id="resultAdmissionDate"></div>
+                    </div>
+                    <div class="row bg_ash">
+                        <div class="col s6">Admission No</div>
+                        <div class="col s6" id="resultAdmissionNo"></div>
+                    </div>
+                    <div class="row bg_white">
+                        <div class="col s6"> Date of Birth</div>
+                        <div class="col s6" id="resultDOB"></div>
+                    </div>
+                </div>
+            </div>
+       </div>
+</div>
+    <!--------------------------------------- ProfilePage End ------------------------------------------->
+    <!----------------------------------------- Message Start ------------------------------------------->
+    <div id="messagePage" style="display:none">
+        <header>
+            <div class="container">
+                <table>
+                    <tbody>
+                        <tr class="white-txt">
+                            <td class="no_padding_td" width="10%">
+                                <a href="#" onclick="dashBoardPage()"><i class="material-icons small">home</i></a>
+                            </td>
+                            <td class="no_padding_td text-align-center" width="80%"><p><b>Jackson </b> > Messages </p></td>
+                            <td class="no_padding_td text-align-right" width="10%" >
+                                <a href="#"><i class="material-icons">settings</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </header>
+        <div class="section  no_padding_td">
+            <ul class="messages">
+              <!--  <li class="messages-item avatar active">
+                    <i class="material-icons circle orange">done</i>
+                    <div class="card-action row">
+                        <span class="col s9">
+                            <span class="reviews-no">Leave on 20th June,2015 <br/> Due to fever </span>
+                        </span>
+                        <span class="col s3 price">
+                            <span class="text-align-right">
+                                9:00am <br/>22/06/2015 </span>
+                        </span>
+                    </div>
+                </li>
+                <li class="messages-item avatar">
+                    <i class="material-icons circle pink">description</i>
+                    <div class="card-action row">
+                        <span class="col s9">
+                            <span class="reviews-no">Leave on 20th June,2015 <br/> Due to fever </span>
+                        </span>
+                        <span class="col s3 price">
+                            <span class="text-align-right">
+                                9:00am <br/>22/06/2015 </span>
+                        </span>
+                    </div>
+                </li>
+                <li class="messages-item avatar">
+                    <i class="material-icons circle green">supervisor_account</i>
+                    <div class="card-action row">
+                        <span class="col s9">
+                            <span class="reviews-no">Leave on 20th June,2015 <br/> Due to fever </span>
+                        </span>
+                        <span class="col s3 price">
+                            <span class="text-align-right">
+                                9:00am <br/>22/06/2015 </span>
+                        </span>
+                    </div>
+                </li>-->
+            </ul>
+        </div>
+    </div>
+    <!----------------------------------------- Message End --------------------------------------------->
+    <!----------------------------------------- ApplyLeave Start ---------------------------------------->
+    <div id="applyLeavePage" style="display:none">
+        <header>
+            <div class="container">
+                <table>
+                    <tbody>
+                        <tr class="white-txt">
+                            <td class="no_padding_td" width="10%">
+                                <a href="#" onclick="dashBoardPage()"><i class="material-icons small">home</i></a>
+                            </td>
+                            <td class="no_padding_td text-align-center" width="80%"><p><b>Jackson </b> >Apply Leave </p></td>
+                            <td class="no_padding_td text-align-right" width="10%" >
+                                <a href="#"><i class="material-icons">settings</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </header>
+    </div>
+    <!----------------------------------------- ApplyLeave End ------------------------------------------->
+    <!----------------------------------------- Attendance Start ---------------------------------------->
+    <div id="attendancePage" style="display:none">
+        <header>
+            <div class="container">
+                <table>
+                    <tbody>
+                        <tr class="white-txt">
+                            <td class="no_padding_td" width="10%">
+                                <a href="#" onclick="dashBoardPage()"><i class="material-icons small">home</i></a>
+                            </td>
+                            <td class="no_padding_td text-align-center" width="80%"><p><b>Jackson </b> >Attendance</p></td>
+                            <td class="no_padding_td text-align-right" width="10%" >
+                                <a href="#"><i class="material-icons">settings</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </header>
+    </div>
+    <!----------------------------------------- Attendance End ------------------------------------------->
+    <!-------------------------------------------- Exam Start -------------------------------------------->
+    <div id="examPage" style="display:none">
+        <header>
+            <div class="container">
+                <table>
+                    <tbody>
+                        <tr class="white-txt">
+                            <td class="no_padding_td" width="10%">
+                                <a href="#" onclick="dashBoardPage()"><i class="material-icons small">home</i></a>
+                            </td>
+                            <td class="no_padding_td text-align-center" width="80%"><p><b>Jackson </b> >Exam</p></td>
+                            <td class="no_padding_td text-align-right" width="10%" >
+                                <a href="#"><i class="material-icons">settings</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </header>
+    </div>
+    <!-------------------------------------------- Exam End ---------------------------------------------->
+    <!----------------------------------------- TimeLine Start ------------------------------------------->
+    <div id="timeLinePage" style="display:none">
+        <header>
+            <div class="container">
+                <table>
+                    <tbody>
+                        <tr class="white-txt">
+                            <td class="no_padding_td" width="10%">
+                                <a href="#" onclick="dashBoardPage()"><i class="material-icons small">home</i></a>
+                            </td>
+                            <td class="no_padding_td text-align-center" width="80%"><p><b>Jackson </b> > School Events </p></td>
+                            <td class="no_padding_td text-align-right" width="10%" >
+                                <a href="#"><i class="material-icons">settings</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </header>
+        <div class="section  no_padding_td">
+            <table>
+                <tbody>
+                    <tr class="white-txt">
+                        <td class="event_td_pink" width="30%">
+                            <p class="no-margin-bottom">Sun</p>
+                            <p class="large_txt">28</p>
+                            <p class="no-margin-top">June-2015</p>
+                        </td>
+                        <td class="event_td_darkblue" width="60%"><p><b>Jackson </b> > School Events </p></td>
+                        <td class="event_td_blackblue" width="10%"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="container">
+            <div class="event_headding">
+                <h5>View Events</h5>
+                <button class="btn-floating btn-large waves-effect waves-light pink lighten-1 calendar_button "><i class="material-icons">today</i>
+                </button>
+            </div>
+        </div>
+        <div class="section  no_padding_td">
+            <table>
+                <tbody>
+                    <tr class="ash waves-effect">
+                        <td width="30%">
+                            <p class="no-margin-bottom no-margin-top"> <b>15 </b> <br/>June</p>
+                        </td>
+                        <td width="70%"><p> Holiday </p></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!----------------------------------------- TimeLine End --------------------------------------------->
+    <!-----------------------------------------Progress Bar Start----------------------------------------->
+        <div class="preloader_blue" style="display: none;">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-------------------------------------Progress Bar End-------------------------------------->
+    <!--  Scripts-->
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.js"></script>
+    <script type="text/javascript" src="js/init.js"></script>
+</body>
+</html>

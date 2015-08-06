@@ -1,0 +1,114 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+@media (min-width: 640px) and (max-width: 1280px) {
+    
+    #schoolListGrid li{
+        width:23%;
+    }
+}
+
+@media (min-width: 320px) {
+    
+    #dashboard li a img{
+        width:91px;
+        height:91px;
+    }
+}
+
+@media (min-width: 384px) {
+    #dashboard li{
+        min-height:180px;
+        min-width:155px;
+    }
+}
+
+@media (min-width: 412px) {
+    #dashboard li{
+        padding-top:25px;
+        min-height:200px;
+        min-width:175px;
+    }
+}
+
+@media (min-width: 480px) {
+    
+    #dashboard li a img{
+        width:91px;
+        height:91px;
+    }
+}
+
+@media (min-width: 568px) {
+    
+    #dashboard li{
+        min-width:215px !important;
+        min-height:280px !important;
+    }
+}
+
+@media (min-width: 640px) {
+    
+    #dashboard li{
+        min-height:200px !important;
+    }
+}
+
+
+@media (min-width:736px) {
+    
+    #dashboard li{
+        min-width:215px !important;
+        min-height:280px !important;
+    }
+    
+}
+
+
+
+@media (min-width: 768px)  {
+    
+    #dashboard li{
+        min-width:300px !important;
+        min-height:280px !important;
+        margin-top:20px;
+        padding-top:40px;
+    }
+}
+
+
+@media (min-width: 800px){
+    
+    #dashboard li{
+        min-width:330px !important;
+        min-height:380px !important;
+        margin:0 0 20px 10px;
+        padding-top:65px;
+        font-size:large;
+    }
+}
+
+@media (min-width: 1024px) {
+    
+    #dashboard li{
+        min-width:350px !important;
+        min-height:280px !important;
+    }
+}
+
+@media (min-width:1280px){
+    
+    #dashboard li{
+        min-height:345px !important;
+    }
+    
+}
+
+@media (min-width: 640px) and (max-width: 1280px) {
+    
+    .proceed_img{
+        max-width:70%;
+    }
+}
+

@@ -1,0 +1,424 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+
+.icon-block {
+    padding: 0 15px;
+}
+
+.icon-block .material-icons {
+    font-size: inherit;
+}
+
+
+
+
+@font-face {
+    font-family: 'SegoeUI';
+    src: url('../fonts/SegoeUI.eot')format('embedded-opentype'), url('../fonts/SegoeUI.woff')format('woff'), url('../fonts/SegoeUI.ttf')format('truetype'), url('../fonts/SegoeUI.svg#CooperBlackStd')format('svg');
+    font-weight: normal;font-style: normal;
+    
+}
+
+.event_headding{
+    position:relative;
+}
+.event_headding h5{
+    color:#888;
+    font-size:medium;
+    font-weight:600;
+}
+
+.no-margin-bottom{
+    margin-bottom:0 !important;
+}
+.no-margin-top{
+    margin-top:0 !important;
+}
+.mb50{
+    margin-bottom:50px;
+}
+.mb10{
+    margin-bottom:10px;
+}
+.mt10{
+    margin-top:10px;
+}
+
+.text-align-right{
+    text-align:right !important;
+}
+.text-align-center{
+    text-align:center !important;
+}
+.white-txt{
+    color:#fff !important;
+}
+td a{
+    color:#fff !important;
+}
+.no_padding_td {
+    padding:0 !important;
+}
+.large_txt{
+    font-size:xx-large;
+    font-weight:bold;
+    margin:0 !important;
+}
+
+header{
+    background-color:#00baff;
+    
+}
+
+header h1 {
+    font-size:larger;
+    color:#fff;
+    margin:0;
+    padding:15px 5px;
+    font-weight:normal;
+}
+.circular {
+    width:30%;
+    border:5px solid #fff;
+    box-shadow: 5px 2px 5px #ccc;
+    -moz-box-shadow: 5px 2px 5px #ccc;
+    -webkit-box-shadow: 5px 2px 5px #ccc;
+    -khtml-box-shadow: 5px 2px 5px #ccc;
+}
+.circular_schools {
+    width:100%;
+    border:5px solid #fff;
+    box-shadow: 5px 2px 5px #ccc;
+    -moz-box-shadow: 5px 2px 5px #ccc;
+    -webkit-box-shadow: 5px 2px 5px #ccc;
+    -khtml-box-shadow: 5px 2px 5px #ccc;
+}
+.login_button{
+    position:absolute;
+    border:none;
+    bottom:-30px;
+    right:15px;
+}
+
+.login_box{
+    width:100%;
+    background-color:#00ad5f;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    box-shadow: 1px 2px 1px #ccc;
+    -moz-box-shadow: 1px 2px 1px #ccc;
+    -webkit-box-shadow: 1px 2px 1px #ccc;
+    -khtml-box-shadow: 1px 2px 1px #ccc;
+    position:relative;
+    float:left;
+    padding:10px;
+}
+.login_box p{
+    color:#fff !important;
+}
+.remember{
+    color:#fff;
+    font-size:13px;
+}
+
+.login_text_box{
+    border:none !important;
+    box-shadow: 1px 2px 1px #009351 !important;
+    -moz-box-shadow: 1px 2px 1px #009351 !important;
+    -webkit-box-shadow: 1px 2px 1px #009351 !important;
+    -khtml-box-shadow: 1px 2px 1px #009351 !important;
+    margin-top:10px;
+    
+}
+
+.textfield{
+    color:#333 !important;
+    background-color:#fff !important;
+    border:none !important;
+    border-radius:5px !important;
+    
+}
+.calendar_button{
+    position:absolute;
+    border:none;
+    bottom:-30px;
+    right:5px;
+    z-index:2;
+}
+.login_form{
+    background-color:#fff !important;
+    border-radius: 5px !important;
+    -webkit-border-radius: 5px !important;
+    -moz-border-radius: 5px !important;
+    color:#333 !important;
+    width:90% !important;
+    padding:0 5% !important;
+    
+}
+placeholder{
+    color:#333;
+}
+
+.search_box{
+    background-color:#00ad5f !important;
+    border-radius: 5px !important;
+    -webkit-border-radius: 5px !important;
+    -moz-border-radius: 5px !important;
+    color:#fff !important;
+    width:80% !important;
+    padding:0 10% !important;
+    
+}
+#search{position:relative;}
+
+.search_button{
+    position:absolute;
+    top:3px;
+    right:13px;
+    background:none !important;
+    box-shadow:none !important;
+    border-radius:0 !important;
+}
+
+#schoolListGrid{
+    list-style:none;
+    margin:0;
+    padding:0;
+    width:100%;
+    text-align:center;
+}
+#schoolListGrid li{
+    margin:0;
+    display:inline-block;
+    padding:0 10px;
+    width:40%;
+    
+}
+
+#schoolListGrid li a:hover{
+    opacity:0.8;
+}
+#schoolListGrid p{
+    font-size:small;
+}
+
+#top_nav{
+    list-style:none;
+    margin:0 !important;
+    padding:0;
+    width:100%;
+    
+}
+#top_nav li{
+    margin:0;
+    display:inline-block;
+    padding:0;
+    color:#fff !important;
+}
+#top_nav li a{
+    color:#fff !important;
+}
+
+.top_nav_title{
+    font-size:medium;
+    color:#fff !important;
+}
+.event_td_pink{
+    background-color:#ff4d81 !important;
+    padding:0 !important;
+    border-radius:0 !important;
+    text-align:center;
+}
+.event_td_darkblue{
+    background-color:#015699 !important;
+    padding:10px !important;
+    border-radius:0 !important;
+    text-align:left;
+}
+.event_td_blackblue{
+    background-color:#19438b !important;
+    padding:10px !important;
+    border-radius:0 !important;
+    text-align:left;
+}
+
+.ash{
+    border-bottom:1px solid #fff;
+    background-color:#a5a5a5;
+    color:#3a3a3a;
+    width:100%;
+    text-align:center;
+}
+
+.ash td{
+    padding:10px;
+    border-radius:0 !important;
+    
+}
+.ash td:first-child {
+    background-color:#c2c2c2;
+    padding:10px;
+    text-align:center;
+    border-radius:0 !important;
+}
+
+.ash:hover{
+    background-color:#015699;
+    color:#fff;
+}
+
+.ash:hover td:first-child {
+    background-color:#ff4d81;
+}
+
+
+.messages {
+    margin: 0.5rem 0 1rem 0;
+    overflow: hidden;
+    position: relative;
+    font-size:small; }
+.messages .messages-item {
+    background-color: #f2f2f2;
+    line-height: 1.5rem;
+    padding: 10px 20px;
+    margin: 0 0 5px 0;
+    -moz-box-shadow:    1px 1px 1px 1px #cecece;
+    -webkit-box-shadow: 1px 1px 1px 1px #cecece;
+    box-shadow:        1px 1px 1px 1px #cecece;
+}
+.messages .messages-item.avatar.active {
+    background-color: #fff;
+    color:#333;
+}
+.messages .messages-item.avatar {
+    padding-left: 55px;
+    position: relative; }
+.messages .messages-item.avatar .circle {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    overflow: hidden;
+    left: 15px;
+    display: inline-block;
+    vertical-align: middle; }
+.messages .messages-item.avatar i.circle {
+    font-size: x-large;
+    line-height: 42px;
+    color: #fff;
+    background-color: #999;
+    text-align: center; }
+.messages .messages-item.avatar .title {
+	   text-align:right !important;}
+.messages .messages-item.avatar p {
+    margin: 0;}
+.messages .messages-item.avatar .secondary-content {
+    position: absolute;
+    top: 16px;
+    right: 16px; }
+.messages .messages-item:last-child {
+    border-bottom: none; }
+.messages .messages-item.active {
+    background-color: #26a69a;
+    color: #eafaf9; }
+.messages a.messages-item {
+    display: block;
+    -webkit-transition: 0.25s;
+    -moz-transition: 0.25s;
+    -o-transition: 0.25s;
+    -ms-transition: 0.25s;
+    transition: 0.25s;
+    color: #26a69a; }
+.messages a.messages-item:not(.active):hover {
+    background-color: #ddd; }
+.messages.with-header .messages-header {
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 10px 20px; }
+.messages.with-header .messages-item {
+    padding-left: 30px; }
+.messages.with-header .messages-item.avatar {
+    padding-left: 72px; }
+
+.message_txt_box{
+    width:70%;
+}
+.message_txt_date{
+    width:30%;
+    text-align:right !important;
+}
+
+
+#dashboard{
+    list-style:none;
+    margin:0;
+    padding:0;
+    width:100%;
+    text-align:center;
+}
+#dashboard li{
+    margin:0 0 10px 10px;
+    display:inline-block;
+    background-color:#fff;
+    box-shadow:1px 1px 1px 1px #c1c1c1;
+    padding:10px 10px 0;
+    min-width:140px;
+    font-size:small;
+    min-height:175px;
+}
+#dashboard li a{
+    color:#000 !important;
+}
+
+.preloader_blue{
+    position:absolute;
+    top:40%;
+    left:40%;
+    z-index:100;
+}
+.proceed_box{
+    background:none !important;
+    box-shadow:none !important;
+    padding:0;
+    margin:0;
+    color:#fff !important;
+}
+
+.proceed_img{
+    max-width:100%;
+}
+
+.bg_ash{
+    background-color:#eeeeee;
+    font-size:small;
+    padding:10px 5px;
+    margin:0;
+}
+.bg_white{
+    background-color:#fff;
+    font-size:small;
+    padding:10px 5px;
+    margin:0;		
+}
+.bg_white>label{
+    color:#333 !important;		
+}
+.bg_ash>label{
+    color:#333 !important;		
+}
+.profile_square {
+    width:30%;
+    border:5px solid #fff;
+    box-shadow: 5px 2px 5px #ccc;
+    -moz-box-shadow: 5px 2px 5px #ccc;
+    -webkit-box-shadow: 5px 2px 5px #ccc;
+    -khtml-box-shadow: 5px 2px 5px #ccc;
+    margin-top:10px;
+    
+}
