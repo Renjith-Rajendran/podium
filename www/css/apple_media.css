@@ -1,0 +1,230 @@
+/* ----------- iPhone 4 and 4S ----------- */
+/* Portrait */
+@media only screen
+and (min-device-width: 320px)
+and (max-device-width: 480px)
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: portrait) {
+	
+	.proceed_img{
+		max-width:100%;
+	}
+	.select_student_proceed p{
+		font-size:small;
+		padding-top:10%;
+	}
+  
+}
+
+/* Landscape */
+@media only screen
+and (min-device-width: 320px)
+and (max-device-width: 480px)
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: landscape) {
+	
+	.select_student_proceed p{
+		font-size:medium;
+		padding-top:17%;
+	}
+	
+	
+   }
+
+/* ----------- iPhone 5 and 5S ----------- */
+/* Portrait */
+@media only screen
+and (min-device-width: 320px)
+and (max-device-width: 568px)
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: portrait) {
+    .messages .messages-item.avatar{
+	    padding-left:65px;
+	    padding-right:45px;
+	}
+	.picker__date-display{
+		display:none;
+	}
+	#dashboard li{
+		padding-top:25px;
+		min-height:152px;
+		
+	}
+	#dashboard li a img{
+		width:61px;
+		height:61px;
+	}
+    /*.mt50{
+        margin-top:80px !important;
+    }*/
+    }
+
+/* Landscape */
+@media only screen
+and (min-device-width: 320px)
+and (max-device-width: 568px)
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: landscape) {
+	
+	.select_student_proceed p{
+		font-size:small !important;
+		padding-top:8% !important;
+	}
+	.proceed_img{
+		max-width:63%;
+	}
+	.circular{
+		width:20%;
+	}
+	.messages .messages-item.avatar{
+	   padding-left:65px;
+	    padding-right:45px;
+	}
+	#dashboard li{
+		min-width:155px !important;
+		min-height:190px !important;
+		
+	}
+       
+}
+
+/* ----------- iPhone 6 ----------- */
+
+/* Portrait */
+@media only screen
+and (min-device-width: 375px)
+and (max-device-width: 667px)
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: portrait) {
+
+}
+
+/* Landscape */
+@media only screen
+and (min-device-width: 375px)
+and (max-device-width: 667px)
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: landscape) {
+    
+		.select_student_proceed p{
+		font-size:medium;
+		padding-top:17%;
+	}
+	
+}
+
+/* ----------- iPhone 6+ ----------- */
+
+/* Portrait */
+@media only screen
+and (min-device-width: 414px)
+and (max-device-width: 736px)
+and (-webkit-min-device-pixel-ratio: 3)
+and (orientation: portrait) {
+        
+}
+
+/* Landscape */
+@media only screen
+and (min-device-width: 414px)
+and (max-device-width: 736px)
+and (-webkit-min-device-pixel-ratio: 3)
+and (orientation: landscape) {
+	
+	.select_student_proceed p{
+		font-size:medium;
+		padding-top:18%;
+	}
+	
+    
+}
+/* ----------- iPad mini ----------- */
+/* ----------- iPad 1 and 2 ----------- */
+
+/* Portrait */
+@media only screen
+and (min-device-width: 768px)
+and (max-device-width: 1024px)
+and (orientation: portrait)
+and (-webkit-min-device-pixel-ratio: 1) {
+	
+	.proceed_img{
+		max-width:100%;
+	}
+	.select_student_proceed p{
+		font-size:x-large;
+		padding:15% 0;
+		line-height:2rem;
+	}
+   .messages .messages-item.avatar{
+	   padding-left:77px;
+	}
+    #dashboard li{
+       padding-top: 60px;
+    }
+}
+
+/* Landscape */
+@media only screen
+and (min-device-width: 768px)
+and (max-device-width: 1024px)
+and (orientation: landscape)
+and (-webkit-min-device-pixel-ratio: 1) {
+	
+		.proceed_img{
+		max-width:100%;
+	}
+	.select_student_proceed p{
+		font-size:x-large;
+		padding:15% 0;
+		line-height:2rem;
+	}
+	.messages .messages-item.avatar{
+	   padding-left:77px;
+	}
+    #dashboard li{
+        min-width:320px !important;
+        min-height:280px !important;
+    }
+ 
+}
+
+/* ----------- iPad 3 and 4 ----------- */
+
+/* Portrait */
+@media only screen
+and (min-device-width: 768px)
+and (max-device-width: 1024px)
+and (orientation: portrait)
+and (-webkit-min-device-pixel-ratio: 2) {
+	
+    .proceed_img{
+		max-width:100%;
+	}
+	.select_student_proceed p{
+		font-size:x-large;
+		padding:15% 0;
+		line-height:2rem;
+	}
+ 
+
+}
+
+/* Landscape */
+@media only screen
+and (min-device-width: 768px)
+and (max-device-width: 1024px)
+and (orientation: landscape)
+and (-webkit-min-device-pixel-ratio: 2) {
+	
+			.proceed_img{
+		max-width:100%;
+	}
+	.select_student_proceed p{
+		font-size:x-large;
+		padding:15% 0;
+		line-height:2rem;
+	}
+ 
+ 
+}
