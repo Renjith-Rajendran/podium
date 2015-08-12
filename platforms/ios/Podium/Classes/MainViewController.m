@@ -67,7 +67,6 @@
 {
     // View defaults to full size.  If you want to customize the view's size, or its subviews (e.g. webView),
     // you can do so here.
-
     [super viewWillAppear:animated];
 }
 
@@ -75,6 +74,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.webView.scrollView.bounces = NO;
 }
 
 - (void)viewDidUnload

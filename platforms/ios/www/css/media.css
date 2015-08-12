@@ -48,10 +48,23 @@
     }
 }
 
+@media (min-width: 600px) {
+    
+    #dashboard li{
+        min-width:250px !important;
+        min-height:300px !important;
+        padding-top:75px;
+        font-size:medium;
+    }
+}
+
+
+
 @media (min-width: 640px) {
     
     #dashboard li{
-        min-height:200px !important;
+        min-height:245px !important;
+        padding-top:40px;
     }
 }
 
@@ -105,10 +118,20 @@
     
 }
 
-@media (min-width: 640px) and (max-width: 1280px) {
+@media (max-width: 360px){
+    .select_student_proceed p{
+        padding:10% 0;
+    }
+}
+
+@media (min-width: 360px) and (max-width: 1280px) {
     
     .proceed_img{
-        max-width:70%;
+        max-width:100%;
+    }
+    .select_student_proceed p{
+        font-size:medium;
+        padding:10% 0;
     }
 }
 
