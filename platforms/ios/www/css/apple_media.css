@@ -57,6 +57,7 @@ and (orientation: portrait) {
     /*.mt50{
         margin-top:80px !important;
     }*/
+    
     }
 
 /* Landscape */
@@ -85,7 +86,6 @@ and (orientation: landscape) {
 		min-height:190px !important;
 		
 	}
-       
 }
 
 /* ----------- iPhone 6 ----------- */
@@ -186,7 +186,10 @@ and (-webkit-min-device-pixel-ratio: 1) {
         min-width:320px !important;
         min-height:280px !important;
     }
- 
+    .popupBox {
+        left: 30%;
+        top: 35%;
+    }
 }
 
 /* ----------- iPad 3 and 4 ----------- */
@@ -206,6 +209,10 @@ and (-webkit-min-device-pixel-ratio: 2) {
 		padding:15% 0;
 		line-height:2rem;
 	}
+    .popupBox {
+        top: 35%;
+        left: 30%;
+    }
  
 
 }

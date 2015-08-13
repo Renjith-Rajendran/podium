@@ -23,7 +23,7 @@
                 <h1>Select school to proceed</h1>
             </div>
         </header>
-        <div class="section no-pad-bot" id="index-banner">
+        <div class="section no-pad-bot mt50" id="index-banner">
             <div class="container">
                 <div class="row center no-margin-bottom">
                     <p class="header col s12 light">Tap on the school logo to change school</p>
@@ -47,6 +47,7 @@
                 <h1>Login</h1>
             </div>
         </header>
+        
          <div class="section no-pad-bot mt50" id="index-banner">
              <div class="container">
                  <div id="schoolLogo" class="row center no-margin-bottom"><img id="schoolImage" src="" alt="School Image" class="circle responsive-img circular">
@@ -64,10 +65,11 @@
                              </div>
                          </div>
                          <p>
-                             <input type="checkbox" id="test5" />
-                             <label class="remember" for="test5">Remember me</label>
+                             <input type="checkbox" id="rememberMe" />
+                             <label class="remember" for="rememberMe">Remember me</label>
                          </p>
-                         <a id="loginButton" class="btn-floating btn-large waves-effect waves-light pink lighten-1 login_button"><i class="material-icons">lock</i></a>
+                         <a id="loginButton" class="btn-floating btn-large waves-effect waves-light pink lighten-1 login_button" href="#"><i class="material-icons">lock</i></a>
+                           <!--<div id="loginButton" class="btn-floating btn-large waves-effect waves-light pink lighten-1 login_button"><i class="material-icons">lock</i></div>-->
                  </div>
              </div>
      </div>
@@ -76,8 +78,20 @@
     <!----------------------------------- StudentDetailsPage Start -------------------------------------->
     <div id="studentDetailsPage" style="display:none">
         <header>
-            <div class="container">
+            <!--<div class="container">
                 <h1>Select student to proceed</h1>
+            </div>-->
+            <div>
+                <table>
+                    <tbody>
+                        <tr class="white-txt">
+                            <td class="no_padding_td text-align-center" width="90%"><h1>Select student to proceed</h1></td>
+                            <td class="no_padding_td text-align-right" width="10%" >
+                                <a href="#" class="waves-effect" onclick="logOut()"><i class="material-icons left">https</i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </header>
         <div class="section no-pad-bot mt50" id="index-banner">
@@ -192,36 +206,36 @@
         </header>
         <div class="row center no-margin-bottom profile_bg_blue mt50">
             <img src="" alt="" class="circle responsive-img circular_profile" id="resultProfilePicture">
-                <h6 class="white-text" id="resultName"></h6>
-                <h6 class="white-text"><b>DOB:</b><span id="resultDOB"></span></h6>
+                <h4 class="white-text" id="resultName"></h4>
+                <h6 class="white-text"><span id="resultDivision"></span></h6>
         </div>
         
         <div class="container">
             <div class="section no-pad-bot" id="index-banner">
                 <div class="container">
                     <div class="row bg_ash">
-                        <div class="col s6">UserName</div>
+                        <div class="col s6">Username</div>
                         <div class="col s6" id="resultUserName"></div>
                     </div>
-                    
-                    <div class="row bg_white">
+                  <!--  <div class="row bg_white">
                         <div class="col s6">Grade</div>
                         <div class="col s6" id="resultGrade"></div>
                     </div>
                     <div class="row bg_ash">
                         <div class="col s6">Division</div>
                         <div class="col s6" id="resultDivision"></div>
-                    </div>
-
-                    
+                    </div>-->
                     <div class="row bg_white">
-                        <div class="col s6">Admission Date</div>
-                        <div class="col s6" id="resultAdmissionDate"></div>
+                        <div class="col s6">Date of Birth</div>
+                        <div class="col s6" id="resultDOB"></div>
                     </div>
-                    
                     <div class="row bg_ash">
                         <div class="col s6">Admission No</div>
                         <div class="col s6" id="resultAdmissionNo"></div>
+                    </div>
+                    <div class="row bg_white">
+                        <div class="col s6">Admission Date</div>
+                        <div class="col s6" id="resultAdmissionDate"></div>
                     </div>
                 </div>
             </div>
@@ -319,7 +333,7 @@
                         <textarea id="textarea1" class="input-field applyleave_textarea" placeholder="Messages"></textarea>
                     </div>
                 </div>
-                <button class="waves-effect waves-light btn apply_leave_button" type="submit" id="submitLeaveButton">Apply Leave
+                <button class="waves-effect waves-light btn apply_leave_button"  id="submitLeaveButton">Apply Leave
                 </button>
           
         </div>
@@ -352,7 +366,7 @@
                 </table>
             </div>
         </header>
-        <div class="container mt50">
+        <div class="container mt50 mb10">
                 <div class="row no-margin-bottom">
                     <div class="col s12 light">
                         <h6>From Date :</h6>
@@ -366,7 +380,7 @@
                     </div>
                 </div>
                 <div class="mb10">
-                    <button class="waves-effect waves-light btn check_attendence_button" type="submit" id="checkAttendanceButton" onclick="checkAttendance()" name="action">Check Attendance</button>
+                    <button class="waves-effect waves-light btn check_attendence_button"  id="checkAttendanceButton" onclick="checkAttendance()" name="action">Check Attendance</button>
                 </div>
                 <div class="attendence_green_head">
                     <h6>Attendance Summary</h6>
@@ -388,8 +402,8 @@
                     </div>
                 </div>
         </div>
-        <div class="container">
-        <div class="row attendence_green_head mt10 relative" id="absenceListHeader">
+        <div class="container" id="absenceListContainer">
+        <div class="row attendence_green_head mt10 relative">
             <div class="container">
                 <h6>Absence Details</h6>
                 <label class="white-text">
@@ -495,6 +509,21 @@
         </div>
     </div>
     <!----------------------------------------- TimeLine End --------------------------------------------->
+    <div class="popupBoxBackground row" id="popupBox" style="display:none;">
+        <div class="popupBox row">
+            <div class="col s12 m6">
+                <div class="card">
+                    <div class="card-content text_align_center">
+                        <span class="card-title card_title_color" id="popupTitle">popup title</span>
+                        <p id="popupMessage">popup message</p>
+                    </div>
+                    <div class="card-action waves-effect text_align_center custom_card_action" onclick="closePopupMessage()">
+                        <a href="#" class="white-txt">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-----------------------------------------Progress Bar Start----------------------------------------->
         <div class="preloader_blue" style="display: none;">
             <div class="preloader-wrapper big active">

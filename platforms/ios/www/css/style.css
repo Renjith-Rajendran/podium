@@ -41,10 +41,10 @@
     margin-top:0 !important;
 }
 .mb50{
-    margin-bottom:50px;
+    margin-bottom:50px !important;
 }
 .mb10{
-    margin-bottom:10px;
+    margin-bottom:10px !important;
 }
 .mt10{
     margin-top:10px !important;
@@ -540,7 +540,8 @@ placeholder{
 }
 .attendence_green_head{
     background-color:#009350;
-    margin:0;
+    margin:0 !important;
+    width:100%;
     padding:5px;
     text-align:center;
     color:#fff;
@@ -557,10 +558,9 @@ placeholder{
 
 .check_attendence_button{
     font-size: small;
-    margin: 0 10%;
-    width: 80%;
+    margin: 5% 15%;
+    width: 73%;
 }
-
 
 .select_student_proceed {
     margin: 0.5rem 0 1rem 0;
@@ -692,4 +692,34 @@ placeholder{
 
 .dropdown_push_top{
     top:50px !important;
+}
+
+.popupBoxBackground {
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+    background-color: rgba(000,000,000,0.5);
+    height: 100%;
+    top:0;
+}
+
+.popupBox{
+    position: absolute;
+    top: 25%;
+    left: 15%;
+    width: 70%;
+    z-index: 100;
+}
+.card_title_color {
+    color: #000 !important;
+}
+.text_align_center {
+    text-align: center;
+}
+
+.custom_card_action{
+    background-color: #00baff;
+    color:#fff;
+    width: 100%;
+    padding: 10px 20px !important;
 }
