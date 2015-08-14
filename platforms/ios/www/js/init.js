@@ -351,6 +351,13 @@ function serviceAuthenticationSucceeded(result) {
         }*/
         
         for (var i = 0; i < len; i++) {
+            var capParentName = obj.StudentDetails[i].ParentName;
+            capParentName = capParentName.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                                                                  return letter.toUpperCase();
+                                                                  });
+
+            $('#loggedParentName:first').html('<b>'+ capParentName + ' </b>');
+            
             var capStudentName = obj.StudentDetails[i].Name;
             capStudentName = capStudentName.toLowerCase().replace(/\b[a-z]/g, function(letter) {
                                                     return letter.toUpperCase();
@@ -415,7 +422,7 @@ function dashBoardHome()
     }*/
     
     var headerText=window.localStorage["LSStudentName"];
-    if (headerText.length < 20) {
+    if (headerText.length < 30) {
         $('#headerStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b>');
     } else {
         $('#headerStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b></marquee>');
@@ -485,7 +492,7 @@ function fetchMessagesSucceeded(result){
          $('#headerMsgStudentName:first').text(headerText);*/
         
         var headerText=window.localStorage["LSStudentName"]+" > Message";
-        if (headerText.length < 20) {
+        if (headerText.length < 30) {
             $('#headerMsgStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Message');
         } else {
             $('#headerMsgStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Message</marquee>');
@@ -548,6 +555,13 @@ function fetchProfileSucceeded(result){
     $('.preloader_blue').hide();
     $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#messagePage,#timeLinePage,#examPage,#attendancePage,#applyLeavePage').hide();
     $('#profilePage').show();
+    
+    var headerText=window.localStorage["LSStudentName"]+" > Profile";
+    if (headerText.length < 30) {
+        $('#headerProfileStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Profile');
+    } else {
+        $('#headerProfileStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Profile</marquee>');
+    }
     var resultObject = eval ("(" + result + ")");
     if (resultObject.StudentId){
         //$('#resultStudentId').text(resultObject.StudentId);
@@ -560,9 +574,11 @@ function fetchProfileSucceeded(result){
        /* $('#resultGrade').text(resultObject.Grade);*/
         var divisionAndGrade= resultObject.Grade+ " "+resultObject.Division;
         $('#resultDivision').text(divisionAndGrade);
-        $('#resultAdmissionDate').text(resultObject.AdminssionDate);
+        var formattedAdmissionDate=formatDates(resultObject.AdminssionDate);
+        $('#resultAdmissionDate').text(formattedAdmissionDate);
         $('#resultAdmissionNo').text(resultObject.AdmissionNo);
-        $('#resultDOB').text(resultObject.DOB);
+        var formattedDOB=formatDates(resultObject.DOB);
+        $('#resultDOB').text(formattedDOB);
         if(resultObject.ProfilePicture) {
             $('#resultProfilePicture').attr('src',"http://"+resultObject.ProfilePicture);
         }
@@ -584,7 +600,7 @@ function fetchApplyLeave(){
    /* var headerText=window.localStorage["LSStudentName"];
     $('#headerApplyLeaveStudentName:first').text(headerText);*/
     var headerText=window.localStorage["LSStudentName"]+" > Apply Leave";
-    if (headerText.length < 20) {
+    if (headerText.length < 30) {
         $('#headerApplyLeaveStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Apply Leave');
     } else {
         $('#headerApplyLeaveStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Apply Leave</marquee>');
@@ -593,22 +609,17 @@ function fetchApplyLeave(){
     if(window.localStorage["LSAcademicStartDate"] != undefined){
         if(window.localStorage["LSAcademicStartDate"] != ""){
             academicMinDate=window.localStorage["LSAcademicStartDate"];
-            dateStartArray = academicMinDate.split('/');
         }
     }
     if(window.localStorage["LSAcademicEndDate"] != undefined){
         if(window.localStorage["LSAcademicEndDate"] != ""){
             academicMaxDate=window.localStorage["LSAcademicEndDate"];
-            dateEndArray = academicMaxDate.split('/');
         }
     }
    
-    console.log("Start Date : "+new Date(dateStartArray[2],dateStartArray[0],dateStartArray[1]));
-    console.log("End Date : "+new Date(dateEndArray[2],dateEndArray[0],dateEndArray[1]));
-    
     $('#leave_date').pickadate({
-                               max: new Date(dateEndArray[2],dateEndArray[0],dateEndArray[0]),
-                               min: new Date(dateStartArray[2],dateStartArray[0],dateStartArray[0]),
+                               max: new Date(academicMaxDate),
+                               min: new Date(academicMinDate),
                                format: 'dd/mm/yyyy',
                                formatSubmit: 'dd/mm/yyyy',
                                hiddenName: true,
@@ -616,8 +627,63 @@ function fetchApplyLeave(){
                                clear: 'Cancel',
                                close: 'OK'
                                });
+    $('#leave_date').on('change', function(e)
+                       {
+                        var dateVal = $('#leave_date').val();
+                        checkHoilday(dateVal);
+                       });
 
 }
+
+
+function checkHoilday(checkHolidayDate) {
+    var dateHolidayArray=checkHolidayDate.split('/');
+    var dateChk = dateHolidayArray[1] + '/' + dateHolidayArray[0] + '/' + dateHolidayArray[2];
+    //Url = domainName+"/desktopmodules/PodiumServices/PodiumWCFService.svc/GetHolidayDetails?";
+    var Url=domainName +"/desktopmodules/PodiumServices/PodiumWCFService.svc/GetHolidayDetails?";
+    var dateCheck;
+    if(window.localStorage["LSStudentId"] != undefined){
+        if(window.localStorage["LSStudentId"] != ""){
+            dateCheck="dates="+ dateChk + "&divisionId=" + window.localStorage["LSDivisionId"];
+        }
+    }
+    var fullUrl =encodeURI(Url + dateCheck);
+    console.log(fullUrl);
+    $.ajax({
+           type:"GET", //GET or POST or PUT or DELETE verb
+           url:fullUrl, // Location of the service
+           contentType:"application/json; charset=utf-8", // content type sent to server
+           dataType:"json", //Expected data format from server
+           processdata:true, //True or False
+           crossDomain:true,
+           beforeSend: function() {
+           $('.preloader_blue').show();
+           },
+           complete: function() {
+           $('.preloader_blue').hide();
+           },
+           success: function (msg)
+           {
+           //On Successfull service call
+           serviceHolidaySucceeded(msg);
+           },
+           error: serviceHolidayFailed
+           // When Service call fails
+           });
+}
+
+function serviceHolidaySucceeded(result)
+{
+    if( result == true) // holiday
+    {
+        $('#submitLeaveButton').attr('disabled', 'true');
+        popupMessage("Podium","The selected date is Holiday, Try other date...");
+    }
+    else{                // not holiday
+        $('#submitLeaveButton').removeAttr('disabled');
+    }
+}
+
 
 $('#applyLeavePage').on('click', '#submitLeaveButton', function(event){
     applyLeave();
@@ -628,6 +694,8 @@ function applyLeave(){
     var leaveDate  = "";
     var message    = "";
     leaveDate =$('#leave_date').val();
+    var dateHolidayArray=leaveDate.split('/');
+    leaveDate = dateHolidayArray[1] + '/' + dateHolidayArray[0] + '/' + dateHolidayArray[2];
     message =$('#textarea1').val();
     if (document.getElementById('forenoon').checked) {
         absentType = 1;
@@ -696,20 +764,12 @@ function serviceLeavApplicationSucceeded(result)
         {
             $('#leave_date').val("");
             $('#textarea1').val("");
-            if(resultObject.Results == true)
-            {
-                //alert('Leave Appliaction successfully sumbited');
-                 popupMessage("Podium","Leave Appliaction submited successfully.");
-            }
-            else{
-               /* if(resultObject.Reason == "Leave Already Exist")
-                {*/
-                   // alert('Leave already exist for the student in the date');
-                  popupMessage("Podium","Leave already exist in the date.");
-                }
-                /*else
-                    alert('Leave Appliaction not success. Try again..!');
-                }*/
+            if(resultObject.Reason == "Already Exist")
+                popupMessage("Podium","Leave already exist in the date.");
+            else if(resultObject.Reason == "True")
+                popupMessage("Podium","Leave Appliaction submited successfully.");
+            else
+                popupMessage("Podium","Leave Appliaction not success. Try again...");
         }
 }
 
@@ -719,74 +779,30 @@ function serviceLeavApplicationFailed(result) {
     popupMessage("Podium","Server Error : Service call for Apply Leave Failed !");
 }
 
-function checkHoilday() {
-    var dateChk =$('#leave_date').val();
-    //Url = domainName+"/desktopmodules/PodiumServices/PodiumWCFService.svc/GetHolidayDetails?";
-    var Url=domainName +"/desktopmodules/PodiumServices/PodiumWCFService.svc/GetHolidayDetails?";
-    var dateCheck;
-    if(window.localStorage["LSStudentId"] != undefined){
-        if(window.localStorage["LSStudentId"] != ""){
-            dateCheck="dates="+ dateChk + "&divisionId=" + window.localStorage["LSDivisionId"];
-        }
-    }
-    var fullUrl =encodeURI(Url + dateCheck);
-    
-    $.ajax({
-           type:"GET", //GET or POST or PUT or DELETE verb
-           url:fullUrl, // Location of the service
-           contentType:"application/json; charset=utf-8", // content type sent to server
-           dataType:"json", //Expected data format from server
-           processdata:true, //True or False
-           crossDomain:true,
-           beforeSend: function() {
-           $('.preloader_blue').show();
-           },
-           complete: function() {
-           $('.preloader_blue').hide();
-           },
-           success: function (msg)
-           {
-           //On Successfull service call
-           serviceHolidaySucceeded(msg);
-           },
-           error: serviceAttendanceFailed
-           // When Service call fails
-           });
+function serviceHolidayFailed(result) {
+    console.log('Service call failed: ' + result.status + '' + result.UserName);
+    //alert('Check your connection and try again.');
+    popupMessage("Podium","Server Error:Service call for Holiday failed");
 }
-
-function serviceHolidaySucceeded(result)
-{
-    if( result == true) // holiday
-    {
-        $('#submitLeaveButton').attr('disabled', 'true');
-       // alert('The selected date is Holiday, Try other date...');
-        popupMessage("Podium","The selected date is Holiday, Try other date...");
-    }
-    else{                // not holiday
-        $('#submitLeaveButton').removeAttr('disabled');
-    }
-}
-
 /*------------------------- Retrieve Attendance Details from Server  ----------------------------------------*/
 function fetchAttendance() {
     if(window.localStorage["LSAcademicStartDate"] != undefined){
         if(window.localStorage["LSAcademicStartDate"] != ""){
             academicMinDate=window.localStorage["LSAcademicStartDate"];
-            dateStartArray = academicMinDate.split('/');
         }
     }
-    if(window.localStorage["LSAcademicEndDate"] != undefined){
+   /* if(window.localStorage["LSAcademicEndDate"] != undefined){
         if(window.localStorage["LSAcademicEndDate"] != ""){
             academicMaxDate=window.localStorage["LSAcademicEndDate"];
-            dateEndArray = academicMaxDate.split('/');
+            //dateEndArray = academicMaxDate.split('/');
         }
-    }
+    }*/
     
-    console.log("Start Date : "+new Date(dateStartArray[2],dateStartArray[0],dateStartArray[1]));
+    console.log("Start Date : "+new Date(academicMinDate));
     
     $('#from_date').pickadate({
                               max: new Date(),
-                              min: new Date(dateStartArray[2],dateStartArray[0],dateStartArray[0]),
+                              min: new Date(academicMinDate),
                               format: 'dd/mm/yyyy',
                               formatSubmit: 'dd/mm/yyyy',
                               hiddenName: true,
@@ -797,7 +813,7 @@ function fetchAttendance() {
     
     $('#to_date').pickadate({
                             max: new Date(),
-                            min: new Date(dateStartArray[2],dateStartArray[0],dateStartArray[0]),
+                            min: new Date(academicMinDate),
                             format: 'dd/mm/yyyy',
                             formatSubmit: 'dd/mm/yyyy',
                             hiddenName: true,
@@ -964,7 +980,7 @@ function serviceAttendanceSucceeded(result)
     $('#headerAttendanceStudentName:first').text(headerText);
     */
     var headerText=window.localStorage["LSStudentName"]+" > Attendance";
-    if (headerText.length < 20) {
+    if (headerText.length < 30) {
         $('#headerAttendanceStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Attendance');
     } else {
         $('#headerAttendanceStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Attendance</marquee>');
@@ -990,7 +1006,8 @@ function serviceAttendanceSucceeded(result)
                 $('#absenceList').empty();
                 $.each(resultObject.AbsenceDetails, function(i, row)
                        {
-                       resultAbsentDetails+='<li class="messages-item avatar"><i class="material-icons circle orange">assignment_ind</i><div class="card-action row"><span class="col s9"><span class="reviews-no">'+row.Reason+'<br/>'+row.AbsentType+'</span></span><span class="col s3 price"><span class="text-align-right">'+row.Date+'</span></span></div></li>';
+                       var formattedAbsentDate=formatDates(row.Date);
+                       resultAbsentDetails+='<li class="messages-item avatar"><i class="material-icons circle orange">assignment_ind</i><div class="card-action row"><span class="col s9"><span class="reviews-no">'+row.Reason+'<br/>'+row.AbsentType+'</span></span><span class="col s3 price"><span class="text-align-right">'+formattedAbsentDate+'</span></span></div></li>';
                        });
                 $('#absenceList').html(resultAbsentDetails);
                 $('#absenceList').listview('refresh');
@@ -1008,7 +1025,7 @@ function fetchExams(){
     $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#timeLinePage,#attendancePage,#applyLeavePage').hide();
     $('#examPage').show();
     var headerText=window.localStorage["LSStudentName"]+" > Exam";
-    if (headerText.length < 20) {
+    if (headerText.length < 30) {
         $('#headerExamStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Exam');
     } else {
         $('#headerExamStudentNaƒme:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Exam</marquee>');
@@ -1019,7 +1036,7 @@ function fetchTimeLine(){
     $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#examPage,#applyLeavePage,#attendancePage').hide();
     $('#timeLinePage').show();
     var headerText=window.localStorage["LSStudentName"]+" > School Events";
-    if (headerText.length < 20) {
+    if (headerText.length < 30) {
         $('#headerTimeLineStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > School Events');
     } else {
         $('#headerTimeLineStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > School Events</marquee>');
@@ -1099,4 +1116,18 @@ function popupMessage(header,message){
 }
 function closePopupMessage(){
      $('#popupBox').hide();
+}
+
+function formatDates(dateVal)
+{
+    var retval;
+    var formattedDate = new Date(dateVal);
+    var d = formattedDate.getDate();
+    var m =  formattedDate.getMonth();
+    m += 1;  // JavaScript months are 0-11
+    var y = formattedDate.getFullYear();
+    if (d < 10) d = '0' + d;
+    if (m < 10) m = '0' + m;
+    retval=d + "/" + m + "/" + y;
+    return retval;
 }

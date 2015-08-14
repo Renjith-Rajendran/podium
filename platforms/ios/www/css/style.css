@@ -59,6 +59,10 @@
     margin-top:50px !important;
 }
 
+.mt60{
+    margin-top:60px !important;
+}
+
 .text-align-right{
     text-align:right !important;
 }
@@ -697,7 +701,7 @@ placeholder{
 .popupBoxBackground {
     position: absolute;
     width: 100%;
-    z-index: 1000;
+    z-index: 10000;
     background-color: rgba(000,000,000,0.5);
     height: 100%;
     top:0;
