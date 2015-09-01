@@ -48,7 +48,6 @@ and (orientation: portrait) {
 	#dashboard li{
 		padding-top:25px;
 		min-height:152px;
-		
 	}
 	#dashboard li a img{
 		width:61px;
@@ -79,13 +78,18 @@ and (orientation: landscape) {
 	}
 	.messages .messages-item.avatar{
 	   padding-left:65px;
-	    padding-right:45px;
+       padding-right:45px;
 	}
 	#dashboard li{
 		min-width:155px !important;
 		min-height:190px !important;
-		
 	}
+    .picker__date-display{
+        display:none;
+    }
+   /* .popupBoxBackground {
+        height: 200%;
+    }*/
 }
 
 /* ----------- iPhone 6 ----------- */

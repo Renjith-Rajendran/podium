@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Podium</title>
     <!-- CSS-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -85,7 +85,8 @@
                 <table>
                     <tbody>
                         <tr class="white-txt">
-                            <td class="no_padding_td text-align-center" width="90%"><h1 id="loggedParentName"></h1></td>
+                            <td class="no_padding_td" width="10%"></td>
+                            <td class="no_padding_td text-align-center" width="80%"><h1 id="loggedParentName"></h1></td>
                             <td class="no_padding_td text-align-right" width="10%" >
                                 <a href="#" class="waves-effect" onclick="logOut()"><i class="material-icons left">https</i></a>
                             </td>
@@ -102,6 +103,7 @@
                     </p>
                     </div>
                     <ul class="select_student_proceed" id="select_student_list">
+                        <li class="select_student_proceed-item avatar"><div class="card-action row no-margin-bottom"><span class="col s4" id="containingDiv"><img src="images/student_pic.jpg" alt="" class="responsive-img proceed_img s4"></span><span class="col s8 price"><p>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :TEST Value <br/>  Standard : 5 B </p></span></div></li>
                     </ul>
             </div>
         </div>
@@ -114,9 +116,7 @@
                 <table>
                     <tbody>
                         <tr class="white-txt">
-                            <td class="no_padding_td" width="10%">
-                                <a href="#"></a>
-                            </td>
+                            <td class="no_padding_td" width="10%"></td>
                             <td class="no_padding_td text-align-center" width="80%"><p><b id="headerStudentName"></b></p></td>
                             <td class="no_padding_td text-align-right" width="10%" >
                                 <a class='drop_button dropdown-button btn' href='#' data-activates='dropdownDashBoard'><i class="material-icons">settings</i></a>
@@ -161,13 +161,13 @@
                         <p>Apply Leave </p>
                     </a>
                 </li>
-                <!--<li class="waves-effect" id="exam">
+                <li class="waves-effect" id="exam">
                  <a href="#">
                  <img src="images/exam.png">
                  <p>Exam</p>
                  </a>
                  </li>
-                 <li class="waves-effect" id="timline">
+                 <!--<li class="waves-effect" id="timline">
                     <a href="#">
                         <img src="images/timeLine.png">
                         <p>Time Line<br/>(school events)</p>
@@ -333,9 +333,8 @@
                         <textarea id="textarea1" class="input-field applyleave_textarea" placeholder="Messages"></textarea>
                     </div>
                 </div>
-                <button class="waves-effect waves-light btn apply_leave_button"  id="submitLeaveButton">Apply Leave
+                <button class="waves-effect waves-light btn apply_leave_button"  id="submitLeaveButton" name="action">Apply Leave
                 </button>
-          
         </div>
     </div>
     <!----------------------------------------- ApplyLeave End ------------------------------------------->
@@ -444,8 +443,53 @@
                 </table>
             </div>
         </header>
+        <div class="section mt50">
+            <div class="container">
+                <div class="row center no-margin-bottom">
+                    <p class="header col s12 light">Tap on the school logo to change school</p>
+                </div>
+                <ul class="collapsible collapsible_exam" data-collapsible="accordion" id="examDetailsList">
+                </ul>
+            </div>
+        </div>
     </div>
     <!-------------------------------------------- Exam End ---------------------------------------------->
+    <!-------------------------------------------- ExamReport Start -------------------------------------------->
+    <div id="examReportPage" style="display:none">
+        <header>
+            <div>
+                <table>
+                    <tbody>
+                        <tr class="white-txt">
+                            <td class="no_padding_td" width="10%">
+                                <a href="#" onclick="dashBoardHome()"><i class="material-icons small">home</i></a>
+                            </td>
+                            <td class="no_padding_td text-align-center" width="80%"><p id="headerExamReportStudentName"></p></td>
+                            <td class="no_padding_td text-align-right" width="10%" >
+                                <a class='drop_button dropdown-button btn' href='#' data-activates='dropdownExamReport'><i class="material-icons">settings</i></a>
+                                <!-- Dropdown Structure -->
+                                <ul id='dropdownExam' class='drop_button-content dropdown_push_top'>
+                                    <li><a href="#" class="waves-effect" onclick="changeStudent()"><i class="material-icons left">person_pin</i>Change Student</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#" class="waves-effect" onclick="changeSchool()"><i class="material-icons left">business</i>Change School</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#" class="waves-effect" onclick="logOut()"><i class="material-icons left">https</i>Logout</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </header>
+        <div class="section mt50">
+            <div class="container">
+                <div class="" id="examReportDetailsList">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-------------------------------------- ExamReport Page End ----------------------------------------->
+
     <!----------------------------------------- TimeLine Start ------------------------------------------->
     <div id="timeLinePage" style="display:none">
         <header>
@@ -509,7 +553,7 @@
         </div>
     </div>
     <!----------------------------------------- TimeLine End --------------------------------------------->
-    <div class="popupBoxBackground row" id="popupBox" style="display:none;">
+    <div class="popupBoxBackground" id="popupBox" style="display:none;">
         <div class="popupBox row">
             <div class="col s12 m6">
                 <div class="card">

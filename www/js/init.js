@@ -4,15 +4,16 @@ var portalId;
 var deviceId="iosdevice";
 var interenetStatus = 0;
 var academicMinDate,academicMaxDate,today = new Date();
-
+var dateStartArray=[],dateEndArray=[];
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
     if (device.platform == 'android' || device.platform == 'Android' || device.platform == 'amazon-fireos' ) {
-        pushNotification = window.plugins.pushNotification;
         document.addEventListener("backbutton", onBackKeyDown, false);
     }
-
+    
+    pushNotification = window.plugins.pushNotification;
+    
     if (navigator.splashscreen) {
         console.warn('Hiding splash screen');
         // We're done initializing, remove the splash screen
@@ -53,10 +54,10 @@ jQuery.expr[':'].Contains = function(a,i,m){
 };
 
 
-function pushNotification()
+function pushNotificationRegister()
 {
     try{
-        pushNotification = window.plugins.pushNotification;
+        //pushNotification = window.plugins.pushNotification;
         if (device.platform == 'android' || device.platform == 'Android' ||
             device.platform == 'amazon-fireos' ) {
             pushNotification.register(
@@ -181,7 +182,8 @@ function checkConnetion()
     if(states[networkState] == "Unknown connection" || states[networkState] == "No network connection")
     {
          interenetStatus = 0;
-         alert("Check your Internet connection!");
+         //alert("Check your Internet connection!");
+         popupMessage("Podium","Check your Internet connection!");
     }
     else
     {
@@ -190,7 +192,7 @@ function checkConnetion()
 }
 
 function loadSchoolList() {
-    //pushNotification();
+    pushNotificationRegister();
     $.ajax({
          url:"http://www.polussoftware.com/podium_mobile/school_list.js",
          contentType:"application/json; charset=utf-8",
@@ -229,7 +231,8 @@ function schoolListSucceeded(result)
 
 // When Service call fails School List
 function schoolListFailed(result) {
-    alert('Server Error : Service call for Authentication Failed !');
+    //alert('Server Error : Service call for School List Failed !');
+    popupMessage("Podium","Server Error : Service call for School List Failed !");
 }
 
 $('.search_box').change(function() {
@@ -249,6 +252,16 @@ $('.search_box').change(function() {
 });
 
 function loginPage(schoolImage, schoolUrl, schoolPort) {
+    console.log(schoolUrl+"==="+window.localStorage["LSDomainName"]);
+    console.log(schoolPort+"==="+window.localStorage["LSPortalId"]);
+    if ((window.localStorage["LSDomainName"] == schoolUrl)&&(window.localStorage["LSPortalId"] == schoolPort)) {
+    }
+    else
+    {
+        window.localStorage.setItem("LSIsRemeberMeChecked", "false");
+        $('#rememberMe').prop('checked', false);
+        window.localStorage.clear();
+    }
     domainName = schoolUrl;
     portalId = schoolPort;
     window.localStorage.setItem("LSDomainName", schoolUrl);
@@ -265,7 +278,7 @@ function loginPage(schoolImage, schoolUrl, schoolPort) {
 
 $('#loginPage').on('click', '#loginButton', function(event){
     $('.preloader_blue').show();
-    if (document.getElementById('test5').checked) {
+    if (document.getElementById('rememberMe').checked) {
     window.localStorage.setItem("LSIsRemeberMeChecked", "true");
     } else {
     window.localStorage.setItem("LSIsRemeberMeChecked", "false");
@@ -279,7 +292,11 @@ $('#loginPage').on('click', '#loginButton', function(event){
     }
     else {
         $('.preloader_blue').hide();
-        alert("Please enter username and password!");
+        //alert("Please enter username and password!");
+        popupMessage("Podium","Username or password incorrect.");
+        $('#username').val("");
+        $('#password').val("");
+                   
     }
 });
 
@@ -316,6 +333,8 @@ function serviceAuthenticationSucceeded(result) {
         window.localStorage.setItem("LSAcademicStartDate", obj.AcadamicStartDate);
         window.localStorage.setItem("LSAcademicEndDate", obj.AcadamicEndDate);
         window.localStorage.setItem("LSGUID", obj.GUID);
+        $('#username').val("");
+        $('#password').val("");
         $('#schoolSelectionPage,#loginPage,#studentDetailsPage,#dashBoardPage,#messagePage,#timeLinePage').hide();
         $('#studentDetailsPage').show();
         var len = obj.StudentDetails.length;
@@ -332,19 +351,28 @@ function serviceAuthenticationSucceeded(result) {
         }*/
         
         for (var i = 0; i < len; i++) {
+            var capStudentName = obj.StudentDetails[i].Name;
+            capStudentName = capStudentName.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                                                    return letter.toUpperCase();
+                                                    });
+            
             if (obj.StudentDetails[i].ProfilePicture.length > 0) {
-                var newList = '<li class="select_student_proceed-item avatar" onclick="dashBoardPage(\''+ obj.StudentDetails[i].StudentId +'\',\''+  obj.StudentDetails[i].Name +'\',\''+  obj.StudentDetails[i].GradeId +'\',\''+  obj.StudentDetails[i].DivisionId +'\')"><div class="card-action row no-margin-bottom"><span class="col s4"><img src="http://'+obj.StudentDetails[i].ProfilePicture+'" alt="" class=" proceed_img"></span><span class="col s8 price"><p>Name:' + obj.StudentDetails[i].Name + ' <br/>  Standard :' + obj.StudentDetails[i].GradeName + obj.StudentDetails[i].DivisionName + ' </p></span></div></li>'
+                var newList = '<li class="select_student_proceed-item avatar" onclick="dashBoardPage(\''+ obj.StudentDetails[i].StudentId +'\',\''+  obj.StudentDetails[i].Name +'\',\''+  obj.StudentDetails[i].GradeId +'\',\''+  obj.StudentDetails[i].DivisionId +'\')"><div class="card-action row no-margin-bottom"><span class="col s4"><img src="http://'+obj.StudentDetails[i].ProfilePicture+'" alt="" class=" proceed_img"></span><span class="col s8 price"><p>Name : ' +capStudentName+ ' <br/>  Standard : ' + obj.StudentDetails[i].GradeName +' '+ obj.StudentDetails[i].DivisionName + ' </p></span></div></li>'
                 
             }
             else
             {
-                var newList = '<li class="select_student_proceed-item avatar" onclick="dashBoardPage(\''+ obj.StudentDetails[i].StudentId +'\',\''+  obj.StudentDetails[i].Name +'\',\''+  obj.StudentDetails[i].GradeId +'\',\''+  obj.StudentDetails[i].DivisionId +'\',\''+obj.AcadamicStartDate +'\',\''+ obj.AcadamicEndDate +'\',\''+ obj.GUID+'\')"><div class="card-action row no-margin-bottom"><span class="col s4"><img src="images/student_pic.jpg" alt="" class=" proceed_img"></span><span class="col s8 price"><p>Name:' + obj.StudentDetails[i].Name + ' <br/>  Standard :' + obj.StudentDetails[i].GradeName + obj.StudentDetails[i].DivisionName + ' </p></span></div></li>'
+                var newList = '<li class="select_student_proceed-item avatar" onclick="dashBoardPage(\''+ obj.StudentDetails[i].StudentId +'\',\''+  obj.StudentDetails[i].Name +'\',\''+  obj.StudentDetails[i].GradeId +'\',\''+  obj.StudentDetails[i].DivisionId +'\',\''+obj.AcadamicStartDate +'\',\''+ obj.AcadamicEndDate +'\',\''+ obj.GUID+'\')"><div class="card-action row no-margin-bottom"><span class="col s4"><img src="images/student_pic.jpg" alt="" class=" proceed_img"></span><span class="col s8 price"><p>Name :' + capStudentName+ ' <br/>  Standard : ' + obj.StudentDetails[i].GradeName +' '+ obj.StudentDetails[i].DivisionName + ' </p></span></div></li>'
             }
             $('#select_student_list').append(newList);
     }
     }
     else {
-        alert("Please enter the valid username and password");
+        $('.preloader_blue').hide();
+        $('#username').val("");
+        $('#password').val("");
+        //alert("Please enter the valid username and password");
+        popupMessage("Podium","Username or password incorrect.");
     }
 }
 
@@ -355,21 +383,21 @@ function serviceAuthenticationFailed(e) {
 }
 
 $('#loginPage').on('click', '#schoolImage', function(event){
-    /*$('#loginPage,#studentDetailsPage,#profilePage,#messagePage,#applyLeavePage,#attendancePage,#examPage,#timeLinePage').hide();
-    $('#schoolSelectionPage').show();*/
                    loadSchoolList();
 });
 
 $('#studentDetailsPage').on('click', '#studentSchoolLogo', function(event){
-    /*$('#loginPage,#studentDetailsPage,#profilePage,#messagePage,#applyLeavePage,#attendancePage,#examPage,#timeLinePage').hide();
-    $('#schoolSelectionPage').show();*/
                     loadSchoolList();
 });
 
 function dashBoardPage(StudentId,Name,GradeId,DivisionId)
 {
      window.localStorage.setItem("LSStudentId",StudentId);
-     window.localStorage.setItem("LSStudentName",Name);
+    var capName = Name;
+    capName = capName.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                                            return letter.toUpperCase();
+                                            });
+     window.localStorage.setItem("LSStudentName",capName);
      window.localStorage.setItem("LSGradeId",GradeId);
      window.localStorage.setItem("LSDivisionId",DivisionId);
      dashBoardHome();
@@ -387,7 +415,7 @@ function dashBoardHome()
     }*/
     
     var headerText=window.localStorage["LSStudentName"];
-    if (headerText.length < 20) {
+    if (headerText.length < 30) {
         $('#headerStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b>');
     } else {
         $('#headerStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b></marquee>');
@@ -401,7 +429,6 @@ $('#dashBoardPage').on('click', '#profile', function(event){
 
 $('#dashBoardPage').on('click', '#attendance', function(event){
     fetchAttendance();
-    /*$('#date').bootstrapMaterialDatePicker({ weekStart : 0, time: false });*/
 });
 
 $('#dashBoardPage').on('click', '#message', function(event){
@@ -424,7 +451,7 @@ function fetchMessages(){
     var studentIdVal=window.localStorage["LSStudentId"];
     var parentIdVal=window.localStorage["LSParentId"];
     var Url = domainName +"/desktopmodules/PodiumServices/PodiumWCFService.svc/Notifications?parentId="+parentIdVal+"&studentId="+studentIdVal;
-    console.log("check " + Url);
+    console.log("Fetch Messages : " + Url);
     $.ajax({
            type: "GET", //GET or POST or PUT or DELETE verb
            url: Url, // Location of the service
@@ -448,23 +475,22 @@ function fetchMessages(){
 // On Successfull service call Authentication
 function fetchMessagesSucceeded(result){
     $('.preloader_blue').hide();
-    $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#timeLinePage,#examPage,#attendancePage,#applyLeavePage').hide();
-    $('#messagePage').show();
-    /*var headerText=window.localStorage["LSStudentName"];
-    $('#headerMsgStudentName:first').text(headerText);*/
-    
-    var headerText=window.localStorage["LSStudentName"]+" > Message";
-    if (headerText.length < 20) {
-        $('#headerMsgStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Message');
-    } else {
-        $('#headerMsgStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Message</marquee>');
-    }
-
-    
     var resultObject = eval ("(" + result + ")");
-    console.log(resultObject);
-    if (resultObject)
+    console.log("Length "+resultObject.length);
+    if (resultObject.length > 0)
     {
+        $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#timeLinePage,#examPage,#attendancePage,#applyLeavePage').hide();
+        $('#messagePage').show();
+        /*var headerText=window.localStorage["LSStudentName"];
+         $('#headerMsgStudentName:first').text(headerText);*/
+        
+        var headerText=window.localStorage["LSStudentName"]+" > Message";
+        if (headerText.length < 30) {
+            $('#headerMsgStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Message');
+        } else {
+            $('#headerMsgStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Message</marquee>');
+        }
+        
         var resultNotification='';
         $.each(resultObject, function(i, row)
                {
@@ -481,17 +507,22 @@ function fetchMessagesSucceeded(result){
         $('#messagesList').html(resultNotification);
         $('#messagesList').listview('refresh');
     }
+    else
+    {
+        popupMessage("Podium","No Messages to list");
+    }
 }
 
 // When Service call fails Authentication
 function fetchMessagesFailed(result) {
-    alert('Server Error : Service call for Messages Failed !');
+    //alert('Server Error : Service call for Messages Failed !');
+    popupMessage("Podium","Server Error : Service call for Messages Failed !");
 }
 
 function fetchProfile(){
     var studentIdVal=window.localStorage["LSStudentId"];
     var Url=domainName +"/desktopmodules/PodiumServices/PodiumWCFService.svc/StudentProfile?studentId="+studentIdVal;
-    console.log("check " + Url);
+    console.log("Fetch Profile : " + Url);
     $.ajax({
            type: "GET", //GET or POST or PUT or DELETE verb
            url: Url, // Location of the service
@@ -514,20 +545,26 @@ function fetchProfile(){
 
 // On Successfull service call Authentication
 function fetchProfileSucceeded(result){
-    console.log(result);
     $('.preloader_blue').hide();
     $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#messagePage,#timeLinePage,#examPage,#attendancePage,#applyLeavePage').hide();
     $('#profilePage').show();
     var resultObject = eval ("(" + result + ")");
     if (resultObject.StudentId){
         //$('#resultStudentId').text(resultObject.StudentId);
-        $('#resultName').text(resultObject.Name);
+        var strName = resultObject.Name;
+        strName = strName.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                                        return letter.toUpperCase();
+                                        });
+        $('#resultName').text(strName);
         $('#resultUserName').text(resultObject.UserName);
-        $('#resultGrade').text(resultObject.Grade);
-        $('#resultDivision').text(resultObject.Division);
-        $('#resultAdmissionDate').text(resultObject.AdminssionDate);
+       /* $('#resultGrade').text(resultObject.Grade);*/
+        var divisionAndGrade= resultObject.Grade+ " "+resultObject.Division;
+        $('#resultDivision').text(divisionAndGrade);
+        var formattedAdmissionDate=formatDates(resultObject.AdminssionDate);
+        $('#resultAdmissionDate').text(formattedAdmissionDate);
         $('#resultAdmissionNo').text(resultObject.AdmissionNo);
-        $('#resultDOB').text(resultObject.DOB);
+        var formattedDOB=formatDates(resultObject.DOB);
+        $('#resultDOB').text(formattedDOB);
         if(resultObject.ProfilePicture) {
             $('#resultProfilePicture').attr('src',"http://"+resultObject.ProfilePicture);
         }
@@ -539,7 +576,8 @@ function fetchProfileSucceeded(result){
 
 // When Service call fails Authentication
 function fetchProfileFailed(result) {
-    alert('Server Error : Service call for Profile Failed !');
+    //alert('Server Error : Service call for Profile Failed !');
+    popupMessage("Podium","Server Error : Service call for Profile Failed !");
 }
 
 function fetchApplyLeave(){
@@ -548,7 +586,7 @@ function fetchApplyLeave(){
    /* var headerText=window.localStorage["LSStudentName"];
     $('#headerApplyLeaveStudentName:first').text(headerText);*/
     var headerText=window.localStorage["LSStudentName"]+" > Apply Leave";
-    if (headerText.length < 20) {
+    if (headerText.length < 30) {
         $('#headerApplyLeaveStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Apply Leave');
     } else {
         $('#headerApplyLeaveStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Apply Leave</marquee>');
@@ -557,25 +595,22 @@ function fetchApplyLeave(){
     if(window.localStorage["LSAcademicStartDate"] != undefined){
         if(window.localStorage["LSAcademicStartDate"] != ""){
             academicMinDate=window.localStorage["LSAcademicStartDate"];
+            dateStartArray = academicMinDate.split('/');
         }
     }
     if(window.localStorage["LSAcademicEndDate"] != undefined){
         if(window.localStorage["LSAcademicEndDate"] != ""){
             academicMaxDate=window.localStorage["LSAcademicEndDate"];
+            dateEndArray = academicMaxDate.split('/');
         }
     }
+   
+    console.log("Start Date : "+new Date(dateStartArray[2],dateStartArray[0],dateStartArray[1]));
+    console.log("End Date : "+new Date(dateEndArray[2],dateEndArray[0],dateEndArray[1]));
     
-    var dateStartArray = academicMinDate.split('/');
-   // var startDate = dateStartArray[2] + '-' + dateStartArray[0] + '-' + dateStartArray[1];
-    
-    var dateEndArray = academicMaxDate.split('/');
-    //var endDate = dateEndArray[2] + '-' + dateEndArray[0] + '-' + dateEndArray[1];
-    /*$('#leave_date').bootstrapMaterialDatePicker({
-        time:false,weekStart:0,format:'DD/MM/YYYY',currentDate:today
-    });*/
     $('#leave_date').pickadate({
-                               max: new Date(dateEndArray[2],dateEndArray[1],dateEndArray[0]),
-                               min: new Date(dateStartArray[2],dateStartArray[1],dateStartArray[0]),
+                               max: new Date(dateEndArray[2],dateEndArray[0],dateEndArray[0]),
+                               min: new Date(dateStartArray[2],dateStartArray[0],dateStartArray[0]),
                                format: 'dd/mm/yyyy',
                                formatSubmit: 'dd/mm/yyyy',
                                hiddenName: true,
@@ -617,8 +652,6 @@ function applyLeave(){
                 domainName= window.localStorage["DomainName"];
             }
         }*/
-        
-        //Url = domainName+"/desktopmodules/PodiumServices/PodiumWCFService.svc/SendLeaveRequest?";
         var Url=domainName +"/desktopmodules/PodiumServices/PodiumWCFService.svc/SendLeaveRequest?";
         var applyLeaveVal;
         if(window.localStorage["LSStudentId"] != undefined){
@@ -627,7 +660,7 @@ function applyLeave(){
             }
         }
         var fullUrl =encodeURI(Url + applyLeaveVal);
-        console.log(fullUrl);
+         console.log("Fetch Apply Leave : " + fullUrl);
         $.ajax({
                type:"GET", //GET or POST or PUT or DELETE verb
                url:fullUrl, // Location of the service
@@ -653,7 +686,8 @@ function applyLeave(){
         
     }
     else{
-        alert('All fields should be filled !');
+        //alert('All fields should be filled !');
+        popupMessage("Podium","All fields should be filled !");
     }
 }
 
@@ -666,23 +700,25 @@ function serviceLeavApplicationSucceeded(result)
             $('#textarea1').val("");
             if(resultObject.Results == true)
             {
-                alert('Leave Appliaction successfully sumbited');
+                //alert('Leave Appliaction successfully sumbited');
+                 popupMessage("Podium","Leave Appliaction submited successfully.");
             }
             else{
-                if(resultObject.Reason == "Leave Already Exist")
-                {
-                    alert('Leave already exist for the student in the date');
+               /* if(resultObject.Reason == "Leave Already Exist")
+                {*/
+                   // alert('Leave already exist for the student in the date');
+                  popupMessage("Podium","Leave already exist in the date.");
                 }
-                else
+                /*else
                     alert('Leave Appliaction not success. Try again..!');
-                
-            }
+                }*/
         }
 }
 
 // When Service call fails Leave Application
 function serviceLeavApplicationFailed(result) {
-    alert('Server Error : Service call for Apply Leave Failed !');
+    //alert('Server Error : Service call for Apply Leave Failed !');
+    popupMessage("Podium","Server Error : Service call for Apply Leave Failed !");
 }
 
 function checkHoilday() {
@@ -725,64 +761,69 @@ function serviceHolidaySucceeded(result)
     if( result == true) // holiday
     {
         $('#submitLeaveButton').attr('disabled', 'true');
-        alert('The selected date is Holiday, Try other date...');
+       // alert('The selected date is Holiday, Try other date...');
+        popupMessage("Podium","The selected date is Holiday, Try other date...");
     }
     else{                // not holiday
         $('#submitLeaveButton').removeAttr('disabled');
     }
 }
 
-/*$('#to_date').bootstrapMaterialDatePicker
-({
- time:false,weekStart:0,format:'DD/MM/YYYY',maxDate:today
- });
-
-$('#from_date').bootstrapMaterialDatePicker
-({
- time:false,weekStart:0, format:'DD/MM/YYYY'
- }).on('change', function(e, date)
-       {
-       $('#to_date').bootstrapMaterialDatePicker('setMinDate', date);
-       });*/
-if(window.localStorage["LSAcademicStartDate"] != undefined){
-    if(window.localStorage["LSAcademicStartDate"] != ""){
-        academicMinDate=window.localStorage["LSAcademicStartDate"];
-    }
-}
-if(window.localStorage["LSAcademicEndDate"] != undefined){
-    if(window.localStorage["LSAcademicEndDate"] != ""){
-        academicMaxDate=window.localStorage["LSAcademicEndDate"];
-    }
-}
-
-
-var dateStartArray = academicMinDate.split('/');
-var dateEndArray = academicMaxDate.split('/');
-
-$('#to_date').pickadate({
-                           max: new Date(dateEndArray[2],dateEndArray[1],dateEndArray[0]),
-                           min: new Date(dateStartArray[2],dateStartArray[1],dateStartArray[0]),
-                           format: 'dd/mm/yyyy',
-                           formatSubmit: 'dd/mm/yyyy',
-                           hiddenName: true,
-                           today: '',
-                           clear: 'Cancel',
-                           close: 'OK'
-                           });
-
-$('#from_date').pickadate({
-                           max: new Date(dateEndArray[2],dateEndArray[1],dateEndArray[0]),
-                           min: new Date(dateStartArray[2],dateStartArray[1],dateStartArray[0]),
-                           format: 'dd/mm/yyyy',
-                           formatSubmit: 'dd/mm/yyyy',
-                           hiddenName: true,
-                           today: '',
-                           clear: 'Cancel',
-                           close: 'OK'
-                           });
-
 /*------------------------- Retrieve Attendance Details from Server  ----------------------------------------*/
 function fetchAttendance() {
+    if(window.localStorage["LSAcademicStartDate"] != undefined){
+        if(window.localStorage["LSAcademicStartDate"] != ""){
+            academicMinDate=window.localStorage["LSAcademicStartDate"];
+            dateStartArray = academicMinDate.split('/');
+        }
+    }
+    if(window.localStorage["LSAcademicEndDate"] != undefined){
+        if(window.localStorage["LSAcademicEndDate"] != ""){
+            academicMaxDate=window.localStorage["LSAcademicEndDate"];
+            dateEndArray = academicMaxDate.split('/');
+        }
+    }
+    
+    console.log("Start Date : "+new Date(dateStartArray[2],dateStartArray[0],dateStartArray[1]));
+    
+    $('#from_date').pickadate({
+                              max: new Date(),
+                              min: new Date(dateStartArray[2],dateStartArray[0],dateStartArray[0]),
+                              format: 'dd/mm/yyyy',
+                              formatSubmit: 'dd/mm/yyyy',
+                              hiddenName: true,
+                              today: '',
+                              clear: 'Cancel',
+                              close: 'OK'
+                              });
+    
+    $('#to_date').pickadate({
+                            max: new Date(),
+                            min: new Date(dateStartArray[2],dateStartArray[0],dateStartArray[0]),
+                            format: 'dd/mm/yyyy',
+                            formatSubmit: 'dd/mm/yyyy',
+                            hiddenName: true,
+                            today: '',
+                            clear: 'Cancel',
+                            close: 'OK'
+                            });
+
+   /* $('#from_date').on('change', function(e, date)
+        {
+                       var dateVal=$('#from_date').val();
+                       alert("Hello"+dateVal+" date"+ new Date(dateVal));
+                       $('#to_date').pickadate({
+                                               max: new Date(),
+                                               min: new Date(dateVal),
+                                               format: 'dd/mm/yyyy',
+                                               formatSubmit: 'dd/mm/yyyy',
+                                               hiddenName: true,
+                                               today: '',
+                                               clear: 'Cancel',
+                                               close: 'OK'
+                                               });
+        });*/
+    
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
@@ -810,8 +851,12 @@ function fetchAttendance() {
     from = frmYYYY+'/'+frmMonth+'/'+frmDay;
     var to_dateText= dd+'/'+mm+'/'+yyyy;
     var from_dateText= frmDay+'/'+frmMonth+'/'+frmYYYY;
-  // $('#from_date').val(from_dateText);
-  // $('#to_date').val(to_dateText);
+    
+    //console.log("to_dateText : "+new Date());
+    //console.log("from_dateText: "+new Date(from_dateText));
+    
+    $('#from_date').val(from_dateText);
+    $('#to_date').val(to_dateText);
     
     /*if(window.localStorage["DomainName"] != undefined){
         if( window.localStorage["DomainName"] != ""){
@@ -826,7 +871,7 @@ function fetchAttendance() {
             AttendanceData="studentId="+window.localStorage["LSStudentId"]+"&fromDate="+ from + "&toDate="+ today;
         }
     }
-     console.log(Url+""+AttendanceData);
+    console.log("Fetch Attendance : " + Url+"?"+AttendanceData);
     $.ajax({
            type:"GET", //GET or POST or PUT or DELETE verb
            url:Url, // Location of the service
@@ -880,7 +925,8 @@ function checkAttendance()
                 CheckAttendanceData="studentId="+window.localStorage["LSStudentId"]+"&fromDate="+ startDate + "&toDate="+ endDate;
             }
         }
-        console.log(Url+""+CheckAttendanceData);
+        console.log("Check Attendance : " + Url+"?"+CheckAttendanceData);
+        
         $.ajax({
                type:"GET", //GET or POST or PUT or DELETE verb
                url:Url, // Location of the service
@@ -906,7 +952,8 @@ function checkAttendance()
     }
     else
     {
-        alert("Please select valid dates");
+        //alert("Please select valid dates");
+        popupMessage("Podium","Please select valid dates");
     }
 }
     
@@ -919,7 +966,7 @@ function serviceAttendanceSucceeded(result)
     $('#headerAttendanceStudentName:first').text(headerText);
     */
     var headerText=window.localStorage["LSStudentName"]+" > Attendance";
-    if (headerText.length < 20) {
+    if (headerText.length < 30) {
         $('#headerAttendanceStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Attendance');
     } else {
         $('#headerAttendanceStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Attendance</marquee>');
@@ -935,61 +982,52 @@ function serviceAttendanceSucceeded(result)
             
             var resultAbsentDetails='';
            
-            /*if(resultObject.AbsenceDetails.length ==0)
+            if(resultObject.AbsenceDetails.length ==0)
             {
-                $('#absenceListHeader').hide();
+                $('#absenceListContainer').hide();
             }
             else
             {
-             $('#absenceListHeader').show();*/
+                $('#absenceListContainer').show();
                 $('#absenceList').empty();
-            
                 $.each(resultObject.AbsenceDetails, function(i, row)
                        {
-                       resultAbsentDetails+='<li class="messages-item avatar"><i class="material-icons circle orange">assignment_ind</i><div class="card-action row"><span class="col s9"><span class="reviews-no">'+row.Reason+'<br/>'+row.AbsentType+'</span></span><span class="col s3 price"><span class="text-align-right">'+row.Date+'</span></span></div></li>';
+                       var formattedAbsentDate=formatDates(row.Date);
+                       resultAbsentDetails+='<li class="messages-item avatar"><i class="material-icons circle orange">assignment_ind</i><div class="card-action row"><span class="col s9"><span class="reviews-no">'+row.Reason+'<br/>'+row.AbsentType+'</span></span><span class="col s3 price"><span class="text-align-right">'+formattedAbsentDate+'</span></span></div></li>';
                        });
                 $('#absenceList').html(resultAbsentDetails);
                 $('#absenceList').listview('refresh');
-            //}
+            }
         }
 }
 
 function serviceAttendanceFailed(result) {
     console.log('Service call failed: ' + result.status + '' + result.UserName);
-    alert('Check your connection and try again.');
+    //alert('Check your connection and try again.');
+    popupMessage("Podium","Server Error:Service call for attendance failed");
 }
 
 function fetchExams(){
     $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#timeLinePage,#attendancePage,#applyLeavePage').hide();
     $('#examPage').show();
-    /*var headerText=window.localStorage["LSStudentName"];
-    $('#headerExamStudentName:first').text(headerText);*/
-    
     var headerText=window.localStorage["LSStudentName"]+" > Exam";
-    if (headerText.length < 20) {
+    if (headerText.length < 30) {
         $('#headerExamStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Exam');
     } else {
-        $('#headerExamStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Exam</marquee>');
+        $('#headerExamStudentNaƒme:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Exam</marquee>');
     }
-
-
 }
 
 function fetchTimeLine(){
     $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#examPage,#applyLeavePage,#attendancePage').hide();
     $('#timeLinePage').show();
-   /* var headerText=window.localStorage["LSStudentName"];
-    $('#headerTimeLineStudentName:first').text(headerText);*/
-    
     var headerText=window.localStorage["LSStudentName"]+" > School Events";
-    if (headerText.length < 20) {
+    if (headerText.length < 30) {
         $('#headerTimeLineStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > School Events');
     } else {
         $('#headerTimeLineStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > School Events</marquee>');
     }
-
 }
-
 
 function changeStudent()
 {
@@ -1003,38 +1041,38 @@ function changeSchool()
 }
 function logOut()
 {
-var LogOutData;
-if(window.localStorage["LSDomainName"] != undefined){
-    if( window.localStorage["LSDomainName"] != ""){
-        domainName= window.localStorage["LSDomainName"];
+    var LogOutData;
+    if(window.localStorage["LSDomainName"] != undefined){
+        if( window.localStorage["LSDomainName"] != ""){
+            domainName= window.localStorage["LSDomainName"];
+        }
     }
-}
-if(window.localStorage["LSGUID"] != undefined){
-    if(window.localStorage["LSGUID"] != ""){
-        LogOutData = "guid="+window.localStorage["LSGUID"];
+    if(window.localStorage["LSGUID"] != undefined){
+        if(window.localStorage["LSGUID"] != ""){
+            LogOutData = "guid="+window.localStorage["LSGUID"];
+        }
     }
-}
-var Url=domainName+"/desktopmodules/PodiumServices/PodiumWCFService.svc/logout";
-$.ajax({
-       type:"GET", //GET or POST or PUT or DELETE verb
-       url:Url, // Location of the service
-       data:LogOutData, //Data sent to server
-       contentType:"application/json; charset=utf-8", // content type sent to server
-       dataType:"json", //Expected data format from server
-       processdata:true, //True or False
-       crossDomain:true,
-       beforeSend: function() {
-       $('.preloader_blue').show();
-       },
-       complete: function() {
-       $('.preloader_blue').hide();
-       },
-       success: function (msg)
-       {
-       serviceLogOutSucceeded(msg);//On Successfull service call
-       },
-       error: serviceLogOutFailed// When Service call fails
-       });
+    var Url=domainName+"/desktopmodules/PodiumServices/PodiumWCFService.svc/logout";
+    $.ajax({
+        type:"GET", //GET or POST or PUT or DELETE verb
+        url:Url, // Location of the service
+        data:LogOutData, //Data sent to server
+        contentType:"application/json; charset=utf-8", // content type sent to server
+        dataType:"json", //Expected data format from server
+        processdata:true, //True or False
+        crossDomain:true,
+        beforeSend: function() {
+        $('.preloader_blue').show();
+        },
+        complete: function() {
+        $('.preloader_blue').hide();
+        },
+        success: function (msg)
+        {
+        serviceLogOutSucceeded(msg);//On Successfull service call
+        },
+        error: serviceLogOutFailed// When Service call fails
+    });
 }
 
 
@@ -1044,14 +1082,38 @@ function serviceLogOutSucceeded(result)
     $('#loginPage').show();
     $('#username').val("");
     $('#password').val("");
+    $('#rememberMe').prop('checked', false);
     window.localStorage.removeItem("LSGUID");
     window.localStorage.removeItem("LSIsRemeberMeChecked");
     window.localStorage.removeItem("LSUserName");
     window.localStorage.removeItem("LSPassword");
-    
     // window.localStorage.clear();
     //$('#remember_me').attr('checked', false).checkboxradio('refresh');
 }
+
 function serviceLogOutFailed(result) {
     console.log('Service call failedfor LogOut');
+}
+
+function popupMessage(header,message){
+     $('#popupBox').show();
+     $('#popupTitle').text(header);
+     $('#popupMessage').text(message);
+}
+function closePopupMessage(){
+     $('#popupBox').hide();
+}
+
+function formatDates(dateVal)
+{
+    var retval;
+    var formattedDate = new Date(dateVal);
+    var d = formattedDate.getDate();
+    var m =  formattedDate.getMonth();
+    m += 1;  // JavaScript months are 0-11
+    var y = formattedDate.getFullYear();
+    if (d < 10) d = '0' + d;
+    if (m < 10) m = '0' + m;
+    retval=d + "/" + m + "/" + y;
+    return retval;
 }

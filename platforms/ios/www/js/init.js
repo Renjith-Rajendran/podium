@@ -6,7 +6,12 @@ var interenetStatus = 0;
 var academicMinDate,academicMaxDate,today = new Date();
 var dateStartArray=[],dateEndArray=[];
 document.addEventListener("deviceready", onDeviceReady, false);
-
+document.addEventListener('orientationchange', myOrientResizeFunction, false);
+$(document).on('focus', 'input, textarea', function() {
+               setTimeout(function() {
+                          window.scrollTo(document.body.scrollLeft, document.body.scrollTop);
+                          }, 0);
+               });
 function onDeviceReady() {
     if (device.platform == 'android' || device.platform == 'Android' || device.platform == 'amazon-fireos' ) {
         document.addEventListener("backbutton", onBackKeyDown, false);
@@ -22,8 +27,27 @@ function onDeviceReady() {
                    }, 100);
     }
     $('.preloader_blue').show();
+    
+     /*$("input,textarea").on('focus', function(){
+             $("header").css({position:'absolute'});
+             });
+     $("input,textarea").on('blur', function(){
+             $("header").css({position:'fixed'});
+             });*/
+    
     loadSchoolList();
 }
+
+function myOrientResizeFunction(){
+    $('#dropdownDashBoard').hide();
+    $('#dropdownProfile').hide();
+    $('#dropdownMessage').hide();
+    $('#dropdownApplyLeave').hide();
+    $('#dropdownAttendance').hide();
+    $('#dropdownExam').hide();
+    $('#dropdownTimeLine').hide();
+}
+
 
 function onBackKeyDown(e) {
     e.preventDefault();
@@ -189,6 +213,7 @@ function checkConnetion()
     {
         interenetStatus = 1;
     }
+    return interenetStatus;
 }
 
 function loadSchoolList() {
@@ -223,7 +248,7 @@ function schoolListSucceeded(result)
         }
         $('#schoolListGrid').append(newlist);
     });
-   $('#loginPage,#studentDetailsPage,#profilePage,#messagePage,#applyLeavePage,#attendancePage,#examPage,#timeLinePage,#dashBoardPage').hide();
+   $('#loginPage,#studentDetailsPage,#profilePage,#messagePage,#applyLeavePage,#attendancePage,#examPage,#timeLinePage,#dashBoardPage,#examReportPage').hide();
     $('.preloader_blue').hide();
     //window.localStorage.clear();
     $('#schoolSelectionPage').show();
@@ -283,20 +308,24 @@ $('#loginPage').on('click', '#loginButton', function(event){
     } else {
     window.localStorage.setItem("LSIsRemeberMeChecked", "false");
     }
-    if ($('#username').val().trim().length > 0 && $('#password').val().length > 0) {
-        var username = $('#username').val().trim();
-        var password = $('#password').val();
+    var username = $('#username').val().trim();
+    var password = $('#password').val();
+    if((username == null || username.length == 0)&&(password == null || password.length == 0)) {
+        $('.preloader_blue').hide();
+        popupMessage("Podium","Please enter username and password.");
+    }
+    else if(username == null || username.length == 0) {
+        $('.preloader_blue').hide();
+        popupMessage("Podium","Please enter username.");
+    }
+    else if (password == null || password.length == 0){
+        $('.preloader_blue').hide();
+        popupMessage("Podium","Please enter password.");
+    }
+    else {
         window.localStorage.setItem("LSUserName", username);
         window.localStorage.setItem("LSPassword", password);
         login(username, password);
-    }
-    else {
-        $('.preloader_blue').hide();
-        //alert("Please enter username and password!");
-        popupMessage("Podium","Username or password incorrect.");
-        $('#username').val("");
-        $('#password').val("");
-                   
     }
 });
 
@@ -335,7 +364,7 @@ function serviceAuthenticationSucceeded(result) {
         window.localStorage.setItem("LSGUID", obj.GUID);
         $('#username').val("");
         $('#password').val("");
-        $('#schoolSelectionPage,#loginPage,#studentDetailsPage,#dashBoardPage,#messagePage,#timeLinePage').hide();
+        $('#schoolSelectionPage,#loginPage,#studentDetailsPage,#dashBoardPage,#messagePage,#timeLinePage,#examReportPage').hide();
         $('#studentDetailsPage').show();
         var len = obj.StudentDetails.length;
         /*for (var i = 0; i < len; i++) {
@@ -364,20 +393,20 @@ function serviceAuthenticationSucceeded(result) {
                                                     });
             
             if (obj.StudentDetails[i].ProfilePicture.length > 0) {
-                var newList = '<li class="select_student_proceed-item avatar" onclick="dashBoardPage(\''+ obj.StudentDetails[i].StudentId +'\',\''+  obj.StudentDetails[i].Name +'\',\''+  obj.StudentDetails[i].GradeId +'\',\''+  obj.StudentDetails[i].DivisionId +'\')"><div class="card-action row no-margin-bottom"><span class="col s4"><img src="http://'+obj.StudentDetails[i].ProfilePicture+'" alt="" class=" proceed_img"></span><span class="col s8 price"><p>Name : ' +capStudentName+ ' <br/>  Standard : ' + obj.StudentDetails[i].GradeName +' '+ obj.StudentDetails[i].DivisionName + ' </p></span></div></li>'
+                var newList = '<li class="select_student_proceed-item avatar" onclick="dashBoardPage(\''+ obj.StudentDetails[i].StudentId +'\',\''+  obj.StudentDetails[i].Name +'\',\''+  obj.StudentDetails[i].GradeId +'\',\''+  obj.StudentDetails[i].DivisionId +'\')"><div class="card-action row no-margin-bottom"><span class="col s4" id="containingDiv"><img src="http://'+obj.StudentDetails[i].ProfilePicture+'" alt="" class="responsive-img proceed_img"></span><span class="col s8 price"><p>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : ' +capStudentName+ ' <br/>  Standard : ' + obj.StudentDetails[i].GradeName +' '+ obj.StudentDetails[i].DivisionName + ' </p></span></div></li>'
                 
             }
             else
             {
-                var newList = '<li class="select_student_proceed-item avatar" onclick="dashBoardPage(\''+ obj.StudentDetails[i].StudentId +'\',\''+  obj.StudentDetails[i].Name +'\',\''+  obj.StudentDetails[i].GradeId +'\',\''+  obj.StudentDetails[i].DivisionId +'\',\''+obj.AcadamicStartDate +'\',\''+ obj.AcadamicEndDate +'\',\''+ obj.GUID+'\')"><div class="card-action row no-margin-bottom"><span class="col s4"><img src="images/student_pic.jpg" alt="" class=" proceed_img"></span><span class="col s8 price"><p>Name :' + capStudentName+ ' <br/>  Standard : ' + obj.StudentDetails[i].GradeName +' '+ obj.StudentDetails[i].DivisionName + ' </p></span></div></li>'
+                var newList = '<li class="select_student_proceed-item avatar" onclick="dashBoardPage(\''+ obj.StudentDetails[i].StudentId +'\',\''+  obj.StudentDetails[i].Name +'\',\''+  obj.StudentDetails[i].GradeId +'\',\''+  obj.StudentDetails[i].DivisionId +'\',\''+obj.AcadamicStartDate +'\',\''+ obj.AcadamicEndDate +'\',\''+ obj.GUID+'\')"><div class="card-action row no-margin-bottom"><span class="col s4" id="containingDiv"><img src="images/student_pic.jpg" alt="" class="responsive-img proceed_img"></span><span class="col s8 price"><p>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :' + capStudentName+ ' <br/>  Standard : ' + obj.StudentDetails[i].GradeName +' '+ obj.StudentDetails[i].DivisionName + ' </p></span></div></li>'
             }
             $('#select_student_list').append(newList);
     }
     }
     else {
         $('.preloader_blue').hide();
-        $('#username').val("");
-        $('#password').val("");
+        //$('#username').val("");
+        //$('#password').val("");
         //alert("Please enter the valid username and password");
         popupMessage("Podium","Username or password incorrect.");
     }
@@ -412,7 +441,7 @@ function dashBoardPage(StudentId,Name,GradeId,DivisionId)
 
 function dashBoardHome()
 {
-    $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#profilePage,#messagePage,#applyLeavePage,#attendancePage,#examPage,#timeLinePage').hide();
+    $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#profilePage,#messagePage,#applyLeavePage,#attendancePage,#examPage,#timeLinePage,#examReportPage').hide();
     $('#dashBoardPage').show();
     /*var headerText=window.localStorage["LSStudentName"];
     if (headerText.length < 10) {
@@ -486,7 +515,7 @@ function fetchMessagesSucceeded(result){
     console.log("Length "+resultObject.length);
     if (resultObject.length > 0)
     {
-        $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#timeLinePage,#examPage,#attendancePage,#applyLeavePage').hide();
+        $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#timeLinePage,#examPage,#attendancePage,#applyLeavePage,#examReportPage').hide();
         $('#messagePage').show();
         /*var headerText=window.localStorage["LSStudentName"];
          $('#headerMsgStudentName:first').text(headerText);*/
@@ -553,7 +582,7 @@ function fetchProfile(){
 // On Successfull service call Authentication
 function fetchProfileSucceeded(result){
     $('.preloader_blue').hide();
-    $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#messagePage,#timeLinePage,#examPage,#attendancePage,#applyLeavePage').hide();
+    $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#messagePage,#timeLinePage,#examPage,#attendancePage,#applyLeavePage,#examReportPage').hide();
     $('#profilePage').show();
     
     var headerText=window.localStorage["LSStudentName"]+" > Profile";
@@ -595,7 +624,7 @@ function fetchProfileFailed(result) {
 }
 
 function fetchApplyLeave(){
-    $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#timeLinePage,#attendancePage,#examPage').hide();
+    $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#timeLinePage,#attendancePage,#examPage,#examReportPage').hide();
     $('#applyLeavePage').show();
    /* var headerText=window.localStorage["LSStudentName"];
     $('#headerApplyLeaveStudentName:first').text(headerText);*/
@@ -629,10 +658,18 @@ function fetchApplyLeave(){
                                });
     $('#leave_date').on('change', function(e)
                        {
+                        if ($('#leave_date').val().length != 0){
                         var dateVal = $('#leave_date').val();
                         checkHoilday(dateVal);
+                        }
                        });
-
+    
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+    var leave_dateText= dd+'/'+mm+'/'+yyyy;
+    $('#leave_date').val(leave_dateText);
 }
 
 
@@ -677,7 +714,8 @@ function serviceHolidaySucceeded(result)
     if( result == true) // holiday
     {
         $('#submitLeaveButton').attr('disabled', 'true');
-        popupMessage("Podium","The selected date is Holiday, Try other date...");
+         Materialize.toast('<span>Selected date is Holiday</span><a class="btn-flat red-text" href="#">OK<a>',2000) // 4000 is the duration of the toast
+        //alert("The selected date is Holiday, Try other date...");
     }
     else{                // not holiday
         $('#submitLeaveButton').removeAttr('disabled');
@@ -710,8 +748,7 @@ function applyLeave(){
         absentType = 4;
     }
     console.log(absentType,leaveDate);
-    
-    if(leaveDate !="" && message!="")
+    if($('#textarea1').val().length!= 0)
     {
         /*if(window.localStorage["DomainName"] != undefined){
             if( window.localStorage["DomainName"] != ""){
@@ -753,7 +790,7 @@ function applyLeave(){
     }
     else{
         //alert('All fields should be filled !');
-        popupMessage("Podium","All fields should be filled !");
+        popupMessage("Podium","Please fill a reason!");
     }
 }
 
@@ -762,12 +799,15 @@ function serviceLeavApplicationSucceeded(result)
         var resultObject = eval ("(" + result + ")");
         if (resultObject)
         {
-            $('#leave_date').val("");
-            $('#textarea1').val("");
-            if(resultObject.Reason == "Already Exist")
+           // $('#leave_date').val("");
+            if(resultObject.Reason == "Already Exist"){
+                $('#textarea1').val("");
                 popupMessage("Podium","Leave already exist in the date.");
-            else if(resultObject.Reason == "True")
+            }
+            else if(resultObject.Reason == "True"){
+                $('#textarea1').val("");
                 popupMessage("Podium","Leave Appliaction submited successfully.");
+            }
             else
                 popupMessage("Podium","Leave Appliaction not success. Try again...");
         }
@@ -928,7 +968,7 @@ function checkAttendance()
                 domainName= window.localStorage["DomainName"];
             }
         }*/
-    if (dateEnd > dateStart)
+    if (dateEnd >= dateStart)
     {
 
         var Url=domainName +"/desktopmodules/PodiumServices/PodiumWCFService.svc/AttendanceDetails";
@@ -974,7 +1014,7 @@ function checkAttendance()
 function serviceAttendanceSucceeded(result)
 {
     $('.preloader_blue').hide();
-    $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#timeLinePage,#applyLeavePage,#examPage').hide();
+    $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#timeLinePage,#applyLeavePage,#examPage,#examReportPage').hide();
     $('#attendancePage').show();
     /*var headerText=window.localStorage["LSStudentName"];
     $('#headerAttendanceStudentName:first').text(headerText);
@@ -1022,18 +1062,175 @@ function serviceAttendanceFailed(result) {
 }
 
 function fetchExams(){
-    $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#timeLinePage,#attendancePage,#applyLeavePage').hide();
+    var studentIdVal=window.localStorage["LSStudentId"];
+    var Url=domainName +"/desktopmodules/PodiumServices/PodiumWCFService.svc/GetAllExams?studentId="+studentIdVal;
+    console.log("Fetch Exam : " + Url);
+    $.ajax({
+           type: "GET", //GET or POST or PUT or DELETE verb
+           url: Url, // Location of the service
+           data: "", //Data sent to server
+           contentType: "application/json; charset=utf-8", // content type sent to server
+           dataType: "json", //Expected data format from server
+           processdata: true, //True or False
+           crossDomain: true,
+           beforeSend: function() {
+           $('.preloader_blue').show();
+           },
+           complete: function() {
+           },
+           success: function(result) {
+           fetchExamsSucceeded(result)
+           },
+           error:fetchExamsFailed // When Service call fails
+           });
+}
+
+// On Successfull service call Exams
+function fetchExamsSucceeded(result){
+    $('.preloader_blue').hide();
+    $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#timeLinePage,#attendancePage,#applyLeavePage,#examReportPage').hide();
     $('#examPage').show();
+    /*$('.collapsible').collapsible({
+      accordion : true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+    });*/
     var headerText=window.localStorage["LSStudentName"]+" > Exam";
     if (headerText.length < 30) {
-        $('#headerExamStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Exam');
+    $('#headerExamStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Exam');
     } else {
-        $('#headerExamStudentNaƒme:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Exam</marquee>');
+    $('#headerExamStudentNaƒme:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Exam</marquee>');
+    }
+    var resultObject = eval ("(" + result + ")");
+    if (resultObject){
+        $('#examDetailsList').empty();
+        var resultExamDetails='';
+        $.each(resultObject, function(i, row)
+        {
+            var capExamName = row.ExamName;
+            capExamName = capExamName.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+            return letter.toUpperCase();
+            });
+            resultExamDetails+='<li><div class="collapsible-header collapsible_exam_head waves-effect waves-teal">'+capExamName+'<small></small></div><div class="collapsible-body"><div class="collapse_darkblue_head"><div class="row no-margin-bottom"><div class="col s12"><h6>Class Rank :&nbsp;&nbsp;<b>'+row.ExamReports[0].ClassRank+'</b></h6></div></div><div class="row no-margin-bottom"><div class="col s12"><h6>Exam Type :&nbsp;&nbsp; <b>'+row.ExamType+'</b></h6></div></div><div class="row no-margin-bottom"><div class="col s12"><h6>Description :&nbsp;&nbsp; <b>'+row.Description+'</b></h6></div></div></div><div class="collapse_green_head text-align-center"><div class="row no-margin-bottom"><div class="col s4"><h6>Subject</h6></div><div class="col s4"><h6>Marks Obtained</h6></div><div class="col s4"><h6>Class Average</h6></div></div></div>';
+                $.each(row.ExamReports, function(key,value) {
+                    $.each(value.ExamReportDetails, function(keydata,valuedata) {
+                        //Total Mark collapse_ash_dark
+                        if(valuedata.CourseId == -1 ||valuedata.Subject == "Total Marks" ){
+                            resultExamDetails+='<div class="collapse_ash_dark text-align-center"><div class="row no-margin-bottom"><div class="col s4"><h6>'+valuedata.Subject+'</h6></div><div class="col s4"><h6>'+valuedata.MarksObtained+'</h6></div><div class="col s4"><h6>'+valuedata.ClassAverage+'</h6></div></div></div>';
+                        }
+                        else{
+                        if(keydata % 2 == 0){
+                           resultExamDetails+='<div class="collapse_ash_light text-align-center"><div class="row no-margin-bottom"><div class="col s4"><h6>'+valuedata.Subject+'</h6></div><div class="col s4"><h6>'+valuedata.MarksObtained+'</h6></div><div class="col s4"><h6>'+valuedata.ClassAverage+'</h6></div></div></div>';
+                        }
+                        else{
+                           resultExamDetails+='<div class="collapse_ash text-align-center"><div class="row no-margin-bottom"><div class="col s4"><h6>'+valuedata.Subject+'</h6></div><div class="col s4"><h6>'+valuedata.MarksObtained+'</h6></div><div class="col s4"><h6>'+valuedata.ClassAverage+'</h6></div></div></div>';
+                        }
+                        }
+                    });
+            });
+            resultExamDetails+='<button class="waves-effect waves-light btn apply_leave_button" type="submit" name="action" onClick="examReportPage(\''+ row.ExamId+ '\')">Report</button></div></li>';
+        });
+        $('#examDetailsList').append(resultExamDetails);
+        $('#examDetailsList').collapsible({refresh:true});
     }
 }
 
+// When Service call fails Authentication
+function fetchExamsFailed(result) {
+    $('.preloader_blue').hide();
+    popupMessage("Podium","Server Error : Service call for Exam Failed !");
+}
+
+// When Service call examReportPage
+function examReportPage(examId) {
+    var studentIdVal=window.localStorage["LSStudentId"];
+    var Url=domainName +"/desktopmodules/PodiumServices/PodiumWCFService.svc/ExamReport?studentId="+studentIdVal+"&examId="+examId;
+    console.log("Fetch ExamReport : " + Url);
+    $.ajax({
+           type: "GET", //GET or POST or PUT or DELETE verb
+           url: Url, // Location of the service
+           data: "", //Data sent to server
+           contentType: "application/json; charset=utf-8", // content type sent to server
+           dataType: "json", //Expected data format from server
+           processdata: true, //True or False
+           crossDomain: true,
+           beforeSend: function() {
+           $('.preloader_blue').show();
+           },
+           complete: function() {
+           },
+           success: function(result) {
+           fetchExamReportSucceeded(result)
+           },
+           error:fetchExamReportFailed // When Service call fails
+           });
+   }
+
+// When Service call fails Exam Report
+function fetchExamReportSucceeded(result) {
+    $('.preloader_blue').hide();
+    $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#examPage,#applyLeavePage,#attendancePage,#timeLinePage').hide();
+    $('#examReportPage').show();
+    var headerText=window.localStorage["LSStudentName"]+" > Progress Report";
+    if (headerText.length < 30) {
+        $('#headerExamReportStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Progress Report');
+    } else {
+        $('#headerExamReportStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Progress Report</marquee>');
+    }
+    var resultObject = eval ("(" + result + ")");
+    if (resultObject){
+        $('#examReportDetailsList').empty();
+        var resultExamDetails='';
+        var capExamName =resultObject.ExamName;
+        capExamName = capExamName.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                                                       return letter.toUpperCase();
+                                                       });
+        resultExamDetails+='<div class="collapsible_exam_head">'+capExamName+'</div><div class=""><div class="collapse_darkblue_head"><div class="row no-margin-bottom"><div class="col s12"><h6>Class Rank :&nbsp;&nbsp;<b>'+resultObject.ClassRank+'</b></h6></div></div><div class="row no-margin-bottom"><div class="col s12"><h6>Grade & Division :&nbsp;&nbsp; <b>'+resultObject.GradeAndDivision+'</b></h6></div></div><div class="row no-margin-bottom"><div class="col s12"><h6>StudentName :&nbsp;&nbsp; <b>'+resultObject.StudentName+'</b></h6></div></div></div><div class="collapse_ash_dark text-align-center mt10"><div class="row no-margin-bottom"><div class="col s12"><h6><b>Exam Report</b></h6></div></div></div><div class="collapse_blue3_blue_head text-align-center"><div class="row no-margin-bottom"><div class="col s3"><h6>Subject</h6></div><div class="col s2"><h6>Marks Obtained</h6></div><div class="col s2"><h6>Class Average</h6></div><div class="col s2"><h6>Grade</h6></div><div class="col s2"><h6>Status</h6></div></div></div></div></li>';
+        $.each(resultObject.ExamReportDetails, function(keydata,valuedata) {
+            //Total Mark collapse_ash_dark
+            if(valuedata.CourseId == -1 ||valuedata.Subject == "Total Marks" ){
+                resultExamDetails+='<div class="collapse_ash_dark text-align-center"><div class="row no-margin-bottom"><div class="col s3"><h6>'+valuedata.Subject+'</h6></div><div class="col s2"><h6>'+valuedata.MarksObtained+'</h6></div><div class="col s2"><h6>'+valuedata.ClassAverage+'</h6></div><div class="col s2"><h6>'+valuedata.Grade+'</h6></div><div class="col s3"><h6>'+valuedata.Status+'</h6></div></div></div>';
+            }
+            else{
+                if(keydata % 2 == 0){
+                    resultExamDetails+='<div class="collapse_exam_ash_light text-align-center"><div class="row no-margin-bottom"><div class="col s3"><h6>'+valuedata.Subject+'</h6></div><div class="col s2"><h6>'+valuedata.MarksObtained+'</h6></div><div class="col s2"><h6>'+valuedata.ClassAverage+'</h6></div><div class="col s2"><h6>'+valuedata.Grade+'</h6></div><div class="col s3"><h6>'+valuedata.Status+'</h6></div></div></div>';
+                }
+                else{
+                    resultExamDetails+='<div class="collapse_exam_ash text-align-center"><div class="row no-margin-bottom"><div class="col s3"><h6>'+valuedata.Subject+'</h6></div><div class="col s2"><h6>'+valuedata.MarksObtained+'</h6></div><div class="col s2"><h6>'+valuedata.ClassAverage+'</h6></div><div class="col s2"><h6>'+valuedata.Grade+'</h6></div><div class="col s3"><h6>'+valuedata.Status+'</h6></div></div></div>';
+                }
+            }
+        });
+        
+        console.log(resultObject.PersonalityAssessmentDetails.length);
+        if(resultObject.PersonalityAssessmentDetails.length>0)
+        {
+            resultExamDetails+='<div class="collapse_ash_dark text-align-center mt10"><div class="row no-margin-bottom"><div class="col s12"><h6><b>Personality Assessment Details</b></h6></div></div></div><div class="collapse_dark3_green_head no-margin-bottom"><div class="row no-margin-bottom"><div class="col s6"><h6>Name</h6></div><div class="col s6"><h6>Mark</h6></div></div></div>';
+            $.each(resultObject.PersonalityAssessmentDetails, function(key,value) {
+                if(key % 2 == 0){
+                   resultExamDetails+='<div class="collapse_exam_ash text-align-center"><div class="row no-margin-bottom"><div class="col s6"><h6>Cricket</h6></div><div class="col s6"><h6>50</h6></div></div></div>';
+               }
+                else{
+                   resultExamDetails+='<div class="collapse_exam_ash_light text-align-center"><div class="row no-margin-bottom"><div class="col s6"><h6>Cricket</h6></div><div class="col s6"><h6>50</h6></div></div></div>';
+                }
+                   
+            });
+        }
+        console.log(resultObject.AttendanceData.DaysAttended);
+        resultExamDetails+='<div class="attendence_green_head mt10"><h6> Attendance Details </h6></div><div class="attendence_green"><div class="row"><div class="col s6"><p>Days Attended</p><h5>'+resultObject.AttendanceData.DaysAttended+'</h5></div><div class="col s6"><p>Total Working Days</p><h5>'+resultObject.AttendanceData.TotalWorkingDays+'</h5></div><div class="col s12"><p>Date Of Issue</p><h5>'+resultObject.AttendanceData.DateOfIssue+'</h5></div></div></div>';
+        resultExamDetails+='<button class="waves-effect waves-light btn apply_leave_button" type="submit" name="action" onClick="">Approve</button></div>';
+        console.log(resultExamDetails);
+        $('#examReportDetailsList').append(resultExamDetails);
+        $('#examReportDetailsList').listview(refresh);
+    }
+}
+
+// When Service call fails Exam Report
+function fetchExamReportFailed(result) {
+    $('.preloader_blue').hide();
+    popupMessage("Podium","Server Error : Service call for ExamReport Failed !");
+}
+
+
 function fetchTimeLine(){
-    $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#examPage,#applyLeavePage,#attendancePage').hide();
+    $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#examPage,#applyLeavePage,#attendancePage,#examReportPage').hide();
     $('#timeLinePage').show();
     var headerText=window.localStorage["LSStudentName"]+" > School Events";
     if (headerText.length < 30) {
@@ -1045,7 +1242,7 @@ function fetchTimeLine(){
 
 function changeStudent()
 {
-    $('#loginPage,#schoolSelectionPage,#timeLinePage,#dashBoardPage,#profilePage,#messagePage,#examPage,#applyLeavePage,#attendancePage').hide();
+    $('#loginPage,#schoolSelectionPage,#timeLinePage,#dashBoardPage,#profilePage,#messagePage,#examPage,#applyLeavePage,#attendancePage,#examReportPage').hide();
     $('#studentDetailsPage').show();
 }
 
@@ -1092,7 +1289,7 @@ function logOut()
 
 function serviceLogOutSucceeded(result)
 {
-    $('#studentDetailsPage,#schoolSelectionPage,#timeLinePage,#dashBoardPage,#profilePage,#messagePage,#examPage,#applyLeavePage,#attendancePage').hide();
+    $('#studentDetailsPage,#schoolSelectionPage,#timeLinePage,#dashBoardPage,#profilePage,#messagePage,#examPage,#applyLeavePage,#attendancePage,#examReportPage').hide();
     $('#loginPage').show();
     $('#username').val("");
     $('#password').val("");
