@@ -531,7 +531,7 @@ function fetchMessagesSucceeded(result){
         $.each(resultObject, function(i, row)
                {
                if(row.NotificationTypeName=="Attendance") {
-               resultNotification+='<li class="messages-item avatar"><i class="material-icons circle orange">assignment_ind</i><div class="card-action row"><span class="col s9"><span class="reviews-no">'+row.NotificationSubject+'<br/> Due to fever </span></span><span class="col s3 price"><span class="text-align-right">'+row.NotificationTime+'<br/>'+row.NotificationDate+'</span></span></div></li>';
+               resultNotification+='<li class="messages-item avatar"><i class="material-icons circle orange">assignment_ind</i><div class="card-action row"><span class="col s9"><span class="reviews-no">'+row.NotificationSubject+'<br/>'+row.NotificationBody+'</span></span><span class="col s3 price"><span class="text-align-right">'+row.NotificationTime+'<br/>'+row.NotificationDate+'</span></span></div></li>';
                }
                else if(row.NotificationTypeName=="Meeting"){
                resultNotification+='<li class="messages-item avatar"><i class="material-icons circle green">supervisor_account</i><div class="card-action row"><span class="col s9"><span class="reviews-no">'+row.NotificationSubject+'<br/>'+row.NotificationBody+'</span></span><span class="col s3 price"><span class="text-align-right">'+row.NotificationTime+'<br/>'+row.NotificationDate+'</span></span></div></li>'
