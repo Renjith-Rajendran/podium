@@ -48,7 +48,6 @@ function myOrientResizeFunction(){
     $('#dropdownTimeLine').hide();
 }
 
-
 function onBackKeyDown(e) {
     e.preventDefault();
     navigator.notification.confirm("Are you sure you want to exit ?", onConfirm, "Confirmation", "Yes,No");
@@ -220,6 +219,7 @@ function loadSchoolList() {
     pushNotificationRegister();
     $.ajax({
          url:"http://www.polussoftware.com/podium_mobile/school_list.js",
+        //url:"http://108.163.141.81/~polussoftware/podium_mobile/school_list.js",
          contentType:"application/json; charset=utf-8",
          dataType:"json",
          beforeSend: function() {
@@ -398,7 +398,7 @@ function serviceAuthenticationSucceeded(result) {
             }
             else
             {
-                var newList = '<li class="select_student_proceed-item avatar" onclick="dashBoardPage(\''+ obj.StudentDetails[i].StudentId +'\',\''+  obj.StudentDetails[i].Name +'\',\''+  obj.StudentDetails[i].GradeId +'\',\''+  obj.StudentDetails[i].DivisionId +'\',\''+obj.AcadamicStartDate +'\',\''+ obj.AcadamicEndDate +'\',\''+ obj.GUID+'\')"><div class="card-action row no-margin-bottom"><span class="col s4" id="containingDiv"><img src="images/student_pic.jpg" alt="" class="responsive-img proceed_img"></span><span class="col s8 price"><p>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :' + capStudentName+ ' <br/>  Standard : ' + obj.StudentDetails[i].GradeName +' '+ obj.StudentDetails[i].DivisionName + ' </p></span></div></li>'
+                var newList = '<li class="select_student_proceed-item avatar" onclick="dashBoardPage(\''+ obj.StudentDetails[i].StudentId +'\',\''+  obj.StudentDetails[i].Name +'\',\''+  obj.StudentDetails[i].GradeId +'\',\''+  obj.StudentDetails[i].DivisionId +'\',\''+obj.AcadamicStartDate +'\',\''+ obj.AcadamicEndDate +'\',\''+ obj.GUID+'\')"><div class="card-action row no-margin-bottom"><span class="col s4" id="containingDiv"><img src="images/student_pic.jpg" alt="" class="responsive-img proceed_img"></span><span class="col s8 price"><p>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : ' + capStudentName+ ' <br/>  Standard : ' + obj.StudentDetails[i].GradeName +' '+ obj.StudentDetails[i].DivisionName + ' </p></span></div></li>'
             }
             $('#select_student_list').append(newList);
     }
@@ -626,6 +626,14 @@ function fetchProfileFailed(result) {
 function fetchApplyLeave(){
     $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#timeLinePage,#attendancePage,#examPage,#examReportPage').hide();
     $('#applyLeavePage').show();
+    if($('#textarea1').val().length== 0)
+    {
+        $('#submitLeaveButton').attr('disabled', 'true');
+    }
+    else if ($('#leave_date').val().length== 0)
+    {
+        $('#submitLeaveButton').attr('disabled', 'true');
+    }
    /* var headerText=window.localStorage["LSStudentName"];
     $('#headerApplyLeaveStudentName:first').text(headerText);*/
     var headerText=window.localStorage["LSStudentName"]+" > Apply Leave";
@@ -664,12 +672,16 @@ function fetchApplyLeave(){
                         }
                        });
     
+    var $input = $('.datepicker').pickadate();
+    // Use the picker object directly.
+    var picker = $input.pickadate('picker');
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
     var yyyy = today.getFullYear();
     var leave_dateText= dd+'/'+mm+'/'+yyyy;
     $('#leave_date').val(leave_dateText);
+    picker.set('select', leave_dateText);
 }
 
 
@@ -714,8 +726,12 @@ function serviceHolidaySucceeded(result)
     if( result == true) // holiday
     {
         $('#submitLeaveButton').attr('disabled', 'true');
-         Materialize.toast('<span>Selected date is Holiday</span><a class="btn-flat red-text" href="#">OK<a>',2000) // 4000 is the duration of the toast
-        //alert("The selected date is Holiday, Try other date...");
+        if ($('#toastMessage').length) {
+            console.log($('#toastMessage').length);
+        }
+        else{
+            Materialize.toast('<span id="toastMessage">Selected date is Holiday</span><a class="btn-flat red-text" href="#">OK<a>',1000);
+        }
     }
     else{                // not holiday
         $('#submitLeaveButton').removeAttr('disabled');
@@ -726,6 +742,20 @@ function serviceHolidaySucceeded(result)
 $('#applyLeavePage').on('click', '#submitLeaveButton', function(event){
     applyLeave();
 });
+
+/*$('#textarea1').keyup(function (e) {
+                       var message    = "";
+                       if(e.which == 13) {
+                         message =$('#textarea1').val();
+                         e.preventDefault();
+                       }
+                       });*/
+
+$('#textarea1').on('keypress', function(e) {
+                         if (e.which == 13 && ! e.shiftKey) {
+                         e.preventDefault();
+                         }
+                         });
 
 function applyLeave(){
     var absentType = 1;
@@ -747,8 +777,9 @@ function applyLeave(){
     else if (document.getElementById('hourPermission').checked){
         absentType = 4;
     }
-    console.log(absentType,leaveDate);
-    if($('#textarea1').val().length!= 0)
+     console.log(absentType,leaveDate);
+     console.log($('#leave_date').val().length);
+    if($('#textarea1').val().length!= 0 && $('#leave_date').val().length!= 0)
     {
         /*if(window.localStorage["DomainName"] != undefined){
             if( window.localStorage["DomainName"] != ""){
@@ -767,7 +798,6 @@ function applyLeave(){
         $.ajax({
                type:"GET", //GET or POST or PUT or DELETE verb
                url:fullUrl, // Location of the service
-               //  data:CheckAttendanceData, //Data sent to server
                contentType:"application/json; charset=utf-8", // content type sent to server
                dataType: "json", //Expected data format from server
                processdata:true, //True or False
@@ -780,17 +810,22 @@ function applyLeave(){
                },
                success: function (msg)
                {
-               //On Successfull service call
                serviceLeavApplicationSucceeded(msg);
                },
                error: serviceLeavApplicationFailed
-               // When Service call fails
                });
-        
     }
     else{
-        //alert('All fields should be filled !');
-        popupMessage("Podium","Please fill a reason!");
+        if($('#textarea1').val().length== 0)
+        {
+           // $('#submitLeaveButton').attr('disabled', 'true');
+            popupMessage("Podium","Please fill a reason!");
+        }
+        else if ($('#leave_date').val().length== 0)
+        {
+            //$('#submitLeaveButton').attr('disabled', 'true');
+            popupMessage("Podium","Please Select a valid Date!");
+        }
     }
 }
 
@@ -799,14 +834,14 @@ function serviceLeavApplicationSucceeded(result)
         var resultObject = eval ("(" + result + ")");
         if (resultObject)
         {
-           // $('#leave_date').val("");
             if(resultObject.Reason == "Already Exist"){
-                $('#textarea1').val("");
+                $('#leave_date').val("");
                 popupMessage("Podium","Leave already exist in the date.");
             }
             else if(resultObject.Reason == "True"){
+                $('#leave_date').val("");
                 $('#textarea1').val("");
-                popupMessage("Podium","Leave Appliaction submited successfully.");
+                popupMessage("Podium","Leave Appliaction submitted successfully.");
             }
             else
                 popupMessage("Podium","Leave Appliaction not success. Try again...");
@@ -1169,11 +1204,11 @@ function fetchExamReportSucceeded(result) {
     $('.preloader_blue').hide();
     $('#loginPage,#studentDetailsPage,#schoolSelectionPage,#dashBoardPage,#profilePage,#messagePage,#examPage,#applyLeavePage,#attendancePage,#timeLinePage').hide();
     $('#examReportPage').show();
-    var headerText=window.localStorage["LSStudentName"]+" > Progress Report";
+    var headerText=window.localStorage["LSStudentName"]+" > Exam > Progress Report";
     if (headerText.length < 30) {
-        $('#headerExamReportStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Progress Report');
+        $('#headerExamReportStudentName:first').html('<b>' + window.localStorage["LSStudentName"] + ' </b> > Exam > Progress Report');
     } else {
-        $('#headerExamReportStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Progress Report</marquee>');
+        $('#headerExamReportStudentName:first').html('<marquee><b>' + window.localStorage["LSStudentName"] + ' </b> > Exam > Progress Report</marquee>');
     }
     var resultObject = eval ("(" + result + ")");
     if (resultObject){

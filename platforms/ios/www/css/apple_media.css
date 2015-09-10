@@ -5,15 +5,16 @@ and (min-device-width: 320px)
 and (max-device-width: 480px)
 and (-webkit-min-device-pixel-ratio: 2)
 and (orientation: portrait) {
-	
 	.proceed_img{
 		max-width:100%;
 	}
+    .picker__date-display{
+        display:none;
+    }
 	.select_student_proceed p{
 		font-size:small;
 		padding-top:10%;
 	}
-  
 }
 
 /* Landscape */
@@ -22,14 +23,14 @@ and (min-device-width: 320px)
 and (max-device-width: 480px)
 and (-webkit-min-device-pixel-ratio: 2)
 and (orientation: landscape) {
-	
 	.select_student_proceed p{
 		font-size:medium;
 		padding-top:17%;
 	}
-	
-	
-   }
+    .picker__date-display{
+        display:none;
+    }
+}
 
 /* ----------- iPhone 5 and 5S ----------- */
 /* Portrait */
@@ -65,7 +66,6 @@ and (min-device-width: 320px)
 and (max-device-width: 568px)
 and (-webkit-min-device-pixel-ratio: 2)
 and (orientation: landscape) {
-	
 	.select_student_proceed p{
 		font-size:small !important;
 		padding-top:8% !important;
@@ -100,7 +100,9 @@ and (min-device-width: 375px)
 and (max-device-width: 667px)
 and (-webkit-min-device-pixel-ratio: 2)
 and (orientation: portrait) {
-
+    .picker__date-display{
+        display:none;
+    }
 }
 
 /* Landscape */
@@ -110,11 +112,13 @@ and (max-device-width: 667px)
 and (-webkit-min-device-pixel-ratio: 2)
 and (orientation: landscape) {
     
-		.select_student_proceed p{
-		font-size:medium;
-		padding-top:17%;
-	}
-	
+    .select_student_proceed p{
+        font-size:medium;
+        padding-top:17%;
+    }
+    .picker__date-display{
+        display:none;
+    }
 }
 
 /* ----------- iPhone 6+ ----------- */
@@ -125,7 +129,9 @@ and (min-device-width: 414px)
 and (max-device-width: 736px)
 and (-webkit-min-device-pixel-ratio: 3)
 and (orientation: portrait) {
-        
+    .picker__date-display{
+        display:none;
+    }
 }
 
 /* Landscape */
@@ -134,12 +140,13 @@ and (min-device-width: 414px)
 and (max-device-width: 736px)
 and (-webkit-min-device-pixel-ratio: 3)
 and (orientation: landscape) {
-	
 	.select_student_proceed p{
 		font-size:medium;
 		padding-top:18%;
 	}
-	
+    .picker__date-display{
+        display:none;
+    }
     
 }
 /* ----------- iPad mini ----------- */
@@ -151,7 +158,6 @@ and (min-device-width: 768px)
 and (max-device-width: 1024px)
 and (orientation: portrait)
 and (-webkit-min-device-pixel-ratio: 1) {
-	
 	.proceed_img{
 		max-width:100%;
 	}
@@ -170,6 +176,9 @@ and (-webkit-min-device-pixel-ratio: 1) {
         top: 35%;
         left: 30%;
     }
+    .picker__date-display{
+        display:none;
+    }
 }
 
 /* Landscape */
@@ -178,8 +187,7 @@ and (min-device-width: 768px)
 and (max-device-width: 1024px)
 and (orientation: landscape)
 and (-webkit-min-device-pixel-ratio: 1) {
-	
-		.proceed_img{
+    .proceed_img{
 		max-width:100%;
 	}
 	.select_student_proceed p{
@@ -198,6 +206,9 @@ and (-webkit-min-device-pixel-ratio: 1) {
         left: 30%;
         top: 35%;
     }
+    .picker__date-display{
+        display:none;
+    }
 }
 
 /* ----------- iPad 3 and 4 ----------- */
@@ -208,7 +219,6 @@ and (min-device-width: 768px)
 and (max-device-width: 1024px)
 and (orientation: portrait)
 and (-webkit-min-device-pixel-ratio: 2) {
-	
     .proceed_img{
 		max-width:100%;
 	}
@@ -220,6 +230,9 @@ and (-webkit-min-device-pixel-ratio: 2) {
     .popupBox {
         top: 35%;
         left: 30%;
+    }
+    .picker__date-display{
+        display:none;
     }
 }
 
@@ -229,7 +242,6 @@ and (min-device-width: 768px)
 and (max-device-width: 1024px)
 and (orientation: landscape)
 and (-webkit-min-device-pixel-ratio: 2) {
-	
     .proceed_img{
 		max-width:100%;
 	}
@@ -242,6 +254,7 @@ and (-webkit-min-device-pixel-ratio: 2) {
         left: 30%;
         top: 35%;
     }
- 
- 
+    .picker__date-display{
+        display:none;
+    }
 }
