@@ -38,6 +38,19 @@ function onDeviceReady() {
     loadSchoolList();
 }
 
+/*$('.dropdown-button').dropdown({
+    belowOrigin: false,// Displays dropdown below the button
+    closeOnClick: false
+});*/
+
+$('.dropdown-button').click( function(event){
+    event.stopPropagation();
+});
+
+$('.body-content').on('click', function(e) {
+    myOrientResizeFunction();
+});
+
 function myOrientResizeFunction(){
     $('#dropdownDashBoard').hide();
     $('#dropdownProfile').hide();
@@ -218,8 +231,7 @@ function checkConnetion()
 function loadSchoolList() {
     pushNotificationRegister();
     $.ajax({
-         url:"http://www.polussoftware.com/podium_mobile/school_list.js",
-        //url:"http://108.163.141.81/~polussoftware/podium_mobile/school_list.js",
+         url:"https://www.polussoftware.com/podium_mobile/school_list.js",
          contentType:"application/json; charset=utf-8",
          dataType:"json",
          beforeSend: function() {
@@ -229,6 +241,7 @@ function loadSchoolList() {
          },
          success: function (result)
          {
+           console.log("here"+result);
          schoolListSucceeded(result)
          },
          error:schoolListFailed// When Service call fails
@@ -240,11 +253,16 @@ function schoolListSucceeded(result)
 {
     $('#schoolListGrid').empty();
     $.each(result.schoolListArray, function(key,value){
-        console.log(value.schoolName);
+           console.log(value.schoolName);
+           console.log(value.schoolURL);
+           console.log(value.schoolVehicleURL);
+           console.log(value.schoolPort);
+           console.log(value.schoolVehiclePort);
+           console.log(value.schoolLogo);
         if (value.schoolName.length < 22) {
         var newlist = '<li id="' + value.id + '" onClick="loginPage(\'' + value.schoolLogo + '\',\'' + value.schoolURL + '\',\'' + value.schoolPort + '\')"<a href="#"><img src="' + value.schoolLogo + '" alt="" class="circle responsive-img circular_schools"></a><p>' + value.schoolName + '</p></li>';
         } else {
-        var newlist = '<li id="' + value.id + '" onClick="loginPage(\'' + value.schoolLogo + '\',\'' + value.schoolURL + '\',\'' + value.schoolPort + '\')"><a href="#"><img src="' + value.schoolLogo + '" alt="" class="circle responsive-img circular_schools"></a><p><marquee>' + value.schoolName + '</marquee></p></li>';
+        var newlist = '<li id="' + value.id + '" onClick="loginPage(\'' + value.schoolLogo + '\',\'' + value.schoolURL + '\',\'' + value.schoolPort + '\')"><a href="#"><img src="' + value.schoolPort + '" alt="" class="circle responsive-img circular_schools"></a><p><marquee>' + value.schoolName + '</marquee></p></li>';
         }
         $('#schoolListGrid').append(newlist);
     });
@@ -257,6 +275,7 @@ function schoolListSucceeded(result)
 // When Service call fails School List
 function schoolListFailed(result) {
     //alert('Server Error : Service call for School List Failed !');
+     alert("schoolListFailed"+result.schoolListArray);
     popupMessage("Podium","Server Error : Service call for School List Failed !");
 }
 
@@ -347,13 +366,18 @@ function login(username, password) {
            $('.preloader_blue').hide();
            },
            success: function(result) {
+           console.log(result);
            serviceAuthenticationSucceeded(result)
            },
-           error: serviceAuthenticationFailed // When Service call fails
+           error: function(result) {
+           console.log(result);
+           serviceAuthenticationFailed // When Service call fails
+           }
            });
 }
 
 function serviceAuthenticationSucceeded(result) {
+    console.log("result"+result);
     $('.preloader_blue').hide();
     obj = JSON.parse(result);
     $('#select_student_list').empty();
@@ -380,6 +404,16 @@ function serviceAuthenticationSucceeded(result) {
         }*/
         
         for (var i = 0; i < len; i++) {
+            /*console.log(obj.StudentDetails[i].ParentName);
+            console.log(obj.StudentDetails[i].StudentId +'\',\''+  obj.StudentDetails[i].Name +'\',\''+  obj.StudentDetails[i].GradeId);
+            if(obj.StudentDetails[i].ParentName == null)
+            {
+                var capParentName = "Parent Name";
+            }
+            else
+            {
+                var capParentName = obj.StudentDetails[i].ParentName;
+            }*/
             var capParentName = obj.StudentDetails[i].ParentName;
             capParentName = capParentName.toLowerCase().replace(/\b[a-z]/g, function(letter) {
                                                                   return letter.toUpperCase();
@@ -413,6 +447,7 @@ function serviceAuthenticationSucceeded(result) {
 }
 
 function serviceAuthenticationFailed(e) {
+    console.log("result"+result);
     $('.preloader_blue').hide();
     $('#schoolSelectionPage').hide();
     $('#loginPage').show();

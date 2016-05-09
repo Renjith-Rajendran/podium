@@ -347,10 +347,15 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 510;
+				LastUpgradeCheck = 0700;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = 5742D3G3L4;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -511,6 +516,7 @@
 					"-weak-lSystem",
 					"-ObjC",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.polus.podium;
 				PRODUCT_NAME = Podium;
 				PROVISIONING_PROFILE = "d449821c-77db-4935-8f32-842bdc2e2408";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -545,6 +551,7 @@
 					"-weak-lSystem",
 					"-ObjC",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.polus.podium;
 				PRODUCT_NAME = Podium;
 				PROVISIONING_PROFILE = "d449821c-77db-4935-8f32-842bdc2e2408";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -563,6 +570,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Sabarinath Nair (5742D3G3L4)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Sabarinath Nair (5742D3G3L4)";
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = "";
